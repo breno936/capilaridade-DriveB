@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capilaridade de Oficinas | Dashboard</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://tile.openstreetmap.org" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-card">
+        <p class="eyebrow">Dashboard</p>
+        <h1>Capilaridade das oficinas</h1>
+        <p class="muted">Visualização da base `car_workshop` com foco em densidade geográfica, qualidade do dado e filtros operacionais.</p>
+      </div>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Filtros</h2>
+          <button id="resetFilters" class="ghost-button">Limpar</button>
+        </div>
+
+        <label class="field">
+          <span>Busca</span>
+          <input id="searchInput" type="search" placeholder="Nome, SAP, CNPJ ou contato" />
+        </label>
+
+        <div class="field-grid">
+          <label class="field"><span>Conceito</span><select id="conceptFilter"></select></label>
+          <label class="field"><span>Checkout</span><select id="checkoutFilter"></select></label>
+          <label class="field"><span>Rede</span><select id="networkFilter"></select></label>
+          <label class="field"><span>Categoria</span><select id="categoryFilter"></select></label>
+          <label class="field"><span>Região serviço</span><select id="regionServiceFilter"></select></label>
+          <label class="field"><span>Região peças</span><select id="regionPartFilter"></select></label>
+          <label class="field"><span>Ativa</span><select id="activeFilter"></select></label>
+          <label class="field"><span>Bloqueada</span><select id="blockedFilter"></select></label>
+          <label class="field"><span>Offline</span><select id="offlineFilter"></select></label>
+          <label class="field"><span>Fee</span><select id="feeFilter"></select></label>
+          <label class="field"><span>Margem</span><select id="marginFilter"></select></label>
+          <label class="field"><span>White label</span><select id="whiteLabelFilter"></select></label>
+          <label class="field"><span>Dahruj</span><select id="dahrujFilter"></select></label>
+          <label class="field"><span>Sem intermediação</span><select id="noIntermediationFilter"></select></label>
+          <label class="field"><span>Recorte geográfico</span><select id="locationScopeFilter"></select></label>
+          <label class="field"><span>Camada do mapa</span><select id="layerModeFilter"></select></label>
+        </div>
+      </section>
+
+      <section class="panel compact-panel">
+        <div class="panel-header">
+          <h2>Resumo filtrado</h2>
+          <button id="exportCsv" class="primary-button">Exportar CSV</button>
+        </div>
+        <div id="quickSummary" class="summary-list"></div>
+      </section>
+    </aside>
+
+    <main class="main-content">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Cobertura nacional</p>
+          <h2>Mapa de calor do Brasil</h2>
+          <p id="heroDescription" class="muted">Carregando base e preparando filtros.</p>
+        </div>
+        <div class="legend-box">
+          <span>Baixa densidade</span>
+          <div class="legend-gradient"></div>
+          <span>Alta densidade</span>
+        </div>
+      </section>
+
+      <section class="kpi-grid" id="kpiGrid"></section>
+      <section id="qualityBanner" class="quality-banner hidden"></section>
+
+      <section class="map-panel panel wide-panel">
+        <div class="panel-header stacked-mobile">
+          <div>
+            <h2>Distribuição geográfica</h2>
+            <p class="muted">Heatmap, pontos e navegação sincronizada com a lista.</p>
+          </div>
+          <button id="fitMapButton" class="ghost-button">Reenquadrar mapa</button>
+        </div>
+        <div id="map" class="map-canvas"></div>
+      </section>
+
+      <section class="analytics-grid">
+        <div class="panel wide-panel">
+          <div class="panel-header">
+            <h2>Distribuição por conceito</h2>
+            <span class="muted">Peso relativo da seleção atual</span>
+          </div>
+          <div id="conceptBreakdown" class="breakdown-list"></div>
+        </div>
+        <div class="panel wide-panel">
+          <div class="panel-header">
+            <h2>Top redes</h2>
+            <span class="muted">Maiores volumes dentro do filtro</span>
+          </div>
+          <div id="networkBreakdown" class="breakdown-list"></div>
+        </div>
+      </section>
+
+      <section class="panel wide-panel">
+        <div class="panel-header stacked-mobile">
+          <div>
+            <h2>Oficinas filtradas</h2>
+            <p id="tableDescription" class="muted">Sem dados filtrados.</p>
+          </div>
+          <div class="pagination-controls">
+            <button id="prevPage" class="ghost-button">Anterior</button>
+            <span id="pageInfo" class="muted">Página 1</span>
+            <button id="nextPage" class="ghost-button">Próxima</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Oficina</th>
+                <th>Conceito</th>
+                <th>Rede</th>
+                <th>Status</th>
+                <th>Coordenadas</th>
+                <th>Contato</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="data/workshops.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
