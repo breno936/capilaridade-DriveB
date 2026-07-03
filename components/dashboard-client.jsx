@@ -3,19 +3,25 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react';
 import {
+  activeStatusOptions,
+  buildMissingCitySummary,
   boolOptions,
+  cityResolutionOptions,
   buildStrategicSummary,
   countBy,
   defaultFilters,
   downloadCsv,
   enrichWorkshops,
   filterWorkshops,
+  franchiseOptions,
   formatNumber,
   formatStateLabel,
   googleMapsUrl,
   layerOptions,
   locationOptions,
+  mapThemeOptions,
   percent,
+  strategicViewOptions,
   uniqueValues,
 } from '../lib/workshop-utils';
 
@@ -24,11 +30,12 @@ const MapView = dynamic(() => import('./map-view'), {
   loading: () => <div className="map-loading">Carregando mapa...</div>,
 });
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
+const chartColors = ['#20c7df', '#3b82f6', '#f6b21a', '#7c8aa5', '#16a34a', '#ef4444'];
 
 function FilterSelect({ label, value, onChange, options }) {
   return (
-    <label className="field">
+    <label className="filter-control filter-card">
       <span>{label}</span>
       <select value={value} onChange={(event) => onChange(event.target.value)}>
         {options.map((option) => (
@@ -41,43 +48,19 @@ function FilterSelect({ label, value, onChange, options }) {
   );
 }
 
-function Breakdown({ data, formatter }) {
-  const entries = Object.entries(data).sort((left, right) => right[1] - left[1]).slice(0, 6);
-  const peak = entries.length ? entries[0][1] : 0;
-
-  if (!entries.length) {
-    return <p className="muted">Sem dados para o recorte atual.</p>;
-  }
-
-  return entries.map(([label, value]) => {
-    const width = peak ? Math.max((value / peak) * 100, 8) : 0;
-    return (
-      <div className="breakdown-row" key={label}>
-        <div>
-          <strong>{formatter(label)}</strong>
-          <div className="breakdown-track">
-            <div className="breakdown-fill" style={{ width: `${width.toFixed(1)}%` }} />
-          </div>
-        </div>
-        <strong>{formatNumber(value)}</strong>
-      </div>
-    );
-  });
-}
-
-function WorkshopBadges({ item }) {
+function SegmentedControl({ value, onChange, options }) {
   return (
-    <div className="badges">
-      <span className="badge info">{item.concept || 'Sem conceito'}</span>
-      <span className="badge">{item.coverageLabel}</span>
-      <span className="badge">{formatStateLabel(item.stateCode)}</span>
-      <span className="badge">Rede {item.networkId || '-'}</span>
-      <span className="badge">Categoria {item.categoryId || '-'}</span>
-      <span className={`badge ${item.isActive ? 'success' : 'danger'}`}>{item.isActive ? 'Ativa' : 'Inativa'}</span>
-      {item.isBlocked ? <span className="badge danger">Bloqueada</span> : null}
-      {item.isOffline ? <span className="badge warning">Offline</span> : null}
-      {!item.isOperational ? <span className="badge danger">Fora da cobertura operacional</span> : null}
-      {!item.isInBrazil ? <span className="badge danger">Fora do Brasil</span> : null}
+    <div className="segmented-control" role="group" aria-label="Camada do mapa">
+      {options.map((option) => (
+        <button
+          key={option.value}
+          className={value === option.value ? 'is-active' : ''}
+          onClick={() => onChange(option.value)}
+          type="button"
+        >
+          {option.label}
+        </button>
+      ))}
     </div>
   );
 }
@@ -94,35 +77,176 @@ function StatusCard({ title, description }) {
   );
 }
 
-function RecommendationItem({ item }) {
+function KpiCard({ label, value, meta, tone = 'cyan', icon, badge }) {
   return (
-    <div className={`recommendation-item ${item.tone}`}>
-      <strong>{item.title}</strong>
-      <p>{item.body}</p>
+    <article className={`kpi-card tone-${tone}`}>
+      <span className="kpi-accent" aria-hidden="true" />
+      <div className="kpi-topline">
+        <span>{label}</span>
+        <span className="metric-icon" aria-hidden="true">{icon}</span>
+      </div>
+      <strong className="kpi-value">{value}</strong>
+      <div className="kpi-meta">
+        {badge ? <span className={`state-badge ${tone}`}>{badge}</span> : null}
+        <span>{meta}</span>
+      </div>
+    </article>
+  );
+}
+
+function WorkshopBadges({ item }) {
+  return (
+    <div className="badges">
+      <span className="badge info">{item.coverageLabel}</span>
+      <span className="badge">{item.concept || 'Sem conceito'}</span>
+      <span className="badge">Rede {item.networkId || '-'}</span>
+      <span className={`badge ${item.isActive ? 'success' : 'danger'}`}>{item.isActive ? 'Ativa' : 'Inativa'}</span>
+      {item.isBlocked ? <span className="badge danger">Bloqueada</span> : null}
+      {item.isOffline ? <span className="badge warning">Offline</span> : null}
+      {!item.isInBrazil ? <span className="badge danger">Fora do Brasil</span> : null}
     </div>
   );
 }
 
-function PriorityStateRow({ report }) {
-  const statusLabel = report.status === 'critical' ? 'Crítico' : report.status === 'attention' ? 'Atenção' : 'Ideal';
+function PriorityTarget({ report, index }) {
+  const statusLabel = report.status === 'critical' ? 'Critico' : report.status === 'attention' ? 'Atencao' : 'Monitorar';
 
   return (
-    <div className="priority-row">
-      <div className="priority-copy">
-        <div className="priority-title">
-          <strong>{report.groupName}</strong>
-          <span className={`status-chip ${report.status}`}>{statusLabel}</span>
-        </div>
-        <p>
-          Operacionais: {formatNumber(report.operationalCounts.oficina)} oficinas, {formatNumber(report.operationalCounts.vidros)} vidros e {formatNumber(report.operationalCounts.pneus)} pneus.
-        </p>
-        <p className="muted">
-          Gap mínimo: {report.minimumDeficitText || 'atendido'} · Gap ideal: {report.idealDeficitText || 'atendido'}
-        </p>
+    <div className={`priority-target ${report.status}`}>
+      <span className="target-rank">{index + 1}</span>
+      <div>
+        <strong>{report.groupName}</strong>
+        {report.locationHint ? <span className="muted-small">{report.locationHint}</span> : null}
+        <p>{report.minimumDeficitText ? `Gap minimo: ${report.minimumDeficitText}` : `Gap ideal: ${report.idealDeficitText || 'atendido'}`}</p>
       </div>
-      <div className="priority-metric">
-        <strong>{formatNumber(report.total)}</strong>
-        <span>registros</span>
+      <span className={`status-chip ${report.status}`}>{statusLabel}</span>
+    </div>
+  );
+}
+
+function CityGapItem({ item, index }) {
+  return (
+    <div className="priority-target attention">
+      <span className="target-rank">{index + 1}</span>
+      <div>
+        <strong>{item.displayName}</strong>
+        <p>{item.stateCode ? `Sem cidade resolvida em ${formatStateLabel(item.stateCode)}` : 'Sem cidade/UF resolvida'}</p>
+      </div>
+      <span className="status-chip attention">Pendente</span>
+    </div>
+  );
+}
+
+function Breakdown({ data, formatter }) {
+  const entries = Object.entries(data).sort((left, right) => right[1] - left[1]).slice(0, 6);
+  const peak = entries.length ? entries[0][1] : 0;
+
+  if (!entries.length) return <p className="muted">Sem dados para o recorte atual.</p>;
+
+  return (
+    <div className="breakdown-list">
+      {entries.map(([label, value], index) => {
+        const width = peak ? Math.max((value / peak) * 100, 7) : 0;
+        return (
+          <div className="breakdown-row" key={label}>
+            <div className="breakdown-label">
+              <span className="legend-dot" style={{ background: chartColors[index % chartColors.length] }} />
+              <strong>{formatter(label)}</strong>
+            </div>
+            <div className="breakdown-track">
+              <div
+                className="breakdown-fill"
+                style={{ width: `${width.toFixed(1)}%`, background: chartColors[index % chartColors.length] }}
+              />
+            </div>
+            <span>{formatNumber(value)}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function DonutChart({ data, formatter }) {
+  const entries = Object.entries(data).sort((left, right) => right[1] - left[1]).slice(0, 5);
+  const total = entries.reduce((sum, [, value]) => sum + value, 0);
+  let cursor = 0;
+  const gradient = entries.length
+    ? entries.map(([, value], index) => {
+      const start = cursor;
+      const end = cursor + (value / total) * 360;
+      cursor = end;
+      return `${chartColors[index % chartColors.length]} ${start}deg ${end}deg`;
+    }).join(', ')
+    : '#1c2437 0deg 360deg';
+
+  return (
+    <div className="donut-layout">
+      <div className="donut-chart" style={{ background: `conic-gradient(${gradient})` }}>
+        <div>
+          <strong>{formatNumber(total)}</strong>
+          <span>registros</span>
+        </div>
+      </div>
+      <div className="donut-legend">
+        {entries.map(([label, value], index) => (
+          <div key={label}>
+            <span className="legend-dot" style={{ background: chartColors[index % chartColors.length] }} />
+            <span>{formatter(label)}</span>
+            <strong>{percent(value, total)}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RadarChart({ current, reference }) {
+  const labels = ['Volume', 'Operação', 'Cobertura', 'Qualidade', 'Diversidade'];
+  const size = 260;
+  const center = size / 2;
+  const maxRadius = 92;
+
+  function pointAt(index, value) {
+    const angle = (-90 + (360 / labels.length) * index) * (Math.PI / 180);
+    const radius = (Math.max(0, Math.min(100, value)) / 100) * maxRadius;
+    return [center + Math.cos(angle) * radius, center + Math.sin(angle) * radius];
+  }
+
+  function polygon(values) {
+    return values.map((value, index) => pointAt(index, value).join(',')).join(' ');
+  }
+
+  return (
+    <div className="radar-wrap">
+      <svg viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Radar de performance regional">
+        {[0.25, 0.5, 0.75, 1].map((step) => (
+          <polygon
+            key={step}
+            points={labels.map((_, index) => pointAt(index, step * 100).join(',')).join(' ')}
+            className="radar-ring"
+          />
+        ))}
+        {labels.map((label, index) => {
+          const [axisX, axisY] = pointAt(index, 100);
+          const [labelX, labelY] = pointAt(index, 116);
+          return (
+            <g key={label}>
+              <line x1={center} y1={center} x2={axisX} y2={axisY} className="radar-axis" />
+              <text x={labelX} y={labelY} textAnchor="middle">{label}</text>
+            </g>
+          );
+        })}
+        <polygon points={polygon(reference)} className="radar-area reference" />
+        <polygon points={polygon(current)} className="radar-area current" />
+        {current.map((value, index) => {
+          const [x, y] = pointAt(index, value);
+          return <circle key={`${value}-${index}`} cx={x} cy={y} r="3.5" className="radar-point" />;
+        })}
+      </svg>
+      <div className="radar-legend">
+        <span><i className="legend-line cyan" />Recorte atual</span>
+        <span><i className="legend-line amber" />Meta de referência</span>
       </div>
     </div>
   );
@@ -144,22 +268,16 @@ export default function DashboardClient() {
       try {
         setLoading(true);
         const response = await fetch('/data/workshops.json', { cache: 'no-store' });
-        if (!response.ok) {
-          throw new Error(`Falha ao carregar dataset (${response.status})`);
-        }
+        if (!response.ok) throw new Error(`Falha ao carregar dataset (${response.status})`);
         const payload = await response.json();
         if (!cancelled) {
           setWorkshops(enrichWorkshops(payload));
           setError('');
         }
       } catch (loadError) {
-        if (!cancelled) {
-          setError(loadError.message || 'Não foi possível carregar o dataset.');
-        }
+        if (!cancelled) setError(loadError.message || 'Não foi possível carregar o dataset.');
       } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        if (!cancelled) setLoading(false);
       }
     }
 
@@ -172,9 +290,7 @@ export default function DashboardClient() {
   const filteredWorkshops = useMemo(() => filterWorkshops(workshops, filters), [filters, workshops]);
 
   useEffect(() => {
-    if (selectedId && !filteredWorkshops.some((item) => item.id === selectedId)) {
-      setSelectedId(null);
-    }
+    if (selectedId && !filteredWorkshops.some((item) => item.id === selectedId)) setSelectedId(null);
   }, [filteredWorkshops, selectedId]);
 
   const conceptOptions = useMemo(
@@ -185,6 +301,11 @@ export default function DashboardClient() {
     () => [{ value: 'all', label: 'Todos' }, ...uniqueValues(workshops, 'checkoutType').map((value) => ({ value, label: value }))],
     [workshops],
   );
+  const responsibleOptions = useMemo(
+    () => [{ value: 'all', label: 'Todos' }, ...uniqueValues(workshops, 'responsibleLabel').map((value) => ({ value, label: value }))],
+    [workshops],
+  );
+  const availableFranchiseOptions = franchiseOptions;
   const networkOptions = useMemo(
     () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'networkId').map((value) => ({ value, label: `Rede ${value}` }))],
     [workshops],
@@ -198,9 +319,7 @@ export default function DashboardClient() {
     [workshops],
   );
   const cityOptions = useMemo(() => {
-    const scoped = filters.state === 'all'
-      ? workshops
-      : workshops.filter((item) => item.stateCode === filters.state);
+    const scoped = filters.state === 'all' ? workshops : workshops.filter((item) => item.stateCode === filters.state);
     const uniqueCities = [...new Map(
       scoped
         .filter((item) => item.cityKey && item.cityDisplayName)
@@ -227,24 +346,41 @@ export default function DashboardClient() {
   const blockedCount = filteredWorkshops.filter((item) => item.isBlocked).length;
   const outsideCount = filteredWorkshops.filter((item) => !item.isInBrazil).length;
   const insideCount = filteredWorkshops.filter((item) => item.isInBrazil).length;
-  const cityResolvedCount = filteredWorkshops.filter((item) => item.cityName).length;
+  const cityResolvedCount = filteredWorkshops.filter((item) => item.hasResolvedCity).length;
+  const unresolvedCityCount = filteredWorkshops.filter((item) => !item.hasResolvedCity).length;
   const networkCount = new Set(filteredWorkshops.map((item) => item.networkId).filter(Boolean)).size;
-
+  const franchiseDistribution = countBy(filteredWorkshops.filter((item) => item.franchiseId), 'franchiseId');
+  const cityPrecisionRate = filteredWorkshops.length ? (cityResolvedCount / filteredWorkshops.length) * 100 : 0;
+  const strategicDimension = filters.strategicView;
+  const strategicSummary = useMemo(() => buildStrategicSummary(filteredWorkshops, strategicDimension), [filteredWorkshops, strategicDimension]);
+  const missingCitySummary = useMemo(() => buildMissingCitySummary(filteredWorkshops), [filteredWorkshops]);
+  const currentScopeLabel = filters.state !== 'all' ? formatStateLabel(filters.state) : 'Brasil';
+  const strategicScopeLabel = strategicDimension === 'city'
+    ? 'Cidades'
+    : strategicDimension === 'state'
+      ? 'Estados'
+      : strategicDimension === 'region_service'
+        ? 'Regiões de serviço'
+        : 'Regiões de peças';
+  const minimumGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.minimumGap, 0);
+  const idealGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.idealGap, 0);
   const conceptDistribution = countBy(filteredWorkshops, 'concept');
+  const coverageDistribution = countBy(filteredWorkshops, 'coverageLabel');
   const stateDistribution = countBy(filteredWorkshops.filter((item) => item.stateCode), 'stateCode');
   const cityDistribution = countBy(filteredWorkshops.filter((item) => item.cityDisplayName), 'cityDisplayName');
   const totalOutside = workshops.filter((item) => !item.isInBrazil).length;
-  const strategicDimension = filters.state !== 'all' && cityResolvedCount > 0 ? 'city' : 'state';
-  const strategicSummary = useMemo(() => buildStrategicSummary(filteredWorkshops, strategicDimension), [filteredWorkshops, strategicDimension]);
-  const currentScopeLabel = filters.state !== 'all' ? formatStateLabel(filters.state) : 'Brasil';
+
+  const radarCurrent = [
+    Math.min(100, filteredWorkshops.length ? (filteredWorkshops.length / Math.max(workshops.length, 1)) * 140 : 0),
+    filteredWorkshops.length ? (operationalCount / filteredWorkshops.length) * 100 : 0,
+    strategicSummary.reports.length ? ((strategicSummary.reports.length - strategicSummary.criticalStates.length) / strategicSummary.reports.length) * 100 : 0,
+    filteredWorkshops.length ? (insideCount / filteredWorkshops.length) * 100 : 0,
+    Math.min(100, networkCount * 12),
+  ];
+  const radarReference = [78, 88, 82, 94, 70];
 
   function updateFilter(key, value) {
-    setFilters((previous) => {
-      if (key === 'state') {
-        return { ...previous, state: value, city: 'all' };
-      }
-      return { ...previous, [key]: value };
-    });
+    setFilters((previous) => (key === 'state' ? { ...previous, state: value, city: 'all' } : { ...previous, [key]: value }));
     setPage(1);
     setFitRequestToken((previous) => previous + 1);
   }
@@ -257,7 +393,7 @@ export default function DashboardClient() {
   }
 
   if (loading) {
-    return <StatusCard title="Carregando dashboard" description="Lendo o dataset exportado e preparando o mapa com a inteligência de cobertura." />;
+    return <StatusCard title="Carregando dashboard" description="Lendo o dataset exportado e preparando a visão operacional." />;
   }
 
   if (error) {
@@ -265,40 +401,50 @@ export default function DashboardClient() {
   }
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand-card">
-          <p className="eyebrow">Dashboard</p>
-          <h1>Capilaridade das oficinas</h1>
-          <p className="muted">Agora com leitura estratégica por estado, classificação de cobertura e recomendações acionáveis em tempo real.</p>
+    <div className="command-shell">
+      <span className="ambient-glow glow-cyan" aria-hidden="true" />
+      <span className="ambient-glow glow-amber" aria-hidden="true" />
+      <aside className="command-sidebar">
+        <div className="brand-lockup">
+          <span className="brand-mark" aria-hidden="true" />
+          <div>
+            <strong>DriveB Ops</strong>
+            <span>Command Center</span>
+          </div>
         </div>
 
-        <section className="panel">
-          <div className="panel-header">
-            <h2>Filtros</h2>
-            <button className="ghost-button" onClick={resetFilters}>Limpar</button>
+        <div className="filter-panel">
+          <div className="panel-heading compact">
+            <span>Filtros estratégicos</span>
+            <button className="text-button" onClick={resetFilters} type="button">Limpar</button>
           </div>
 
-          <label className="field">
+          <label className="search-control">
             <span>Busca</span>
             <input
               type="search"
-              placeholder="Nome, SAP, CNPJ, UF ou cobertura"
+              placeholder="Oficina, SAP, CNPJ, UF"
               value={filters.search}
               onChange={(event) => updateFilter('search', event.target.value)}
             />
           </label>
 
-          <div className="field-grid">
+          <div className="filter-stack">
+            <FilterSelect label="Estado (UF)" value={filters.state} onChange={(value) => updateFilter('state', value)} options={stateOptions} />
+            <FilterSelect label="Cidade" value={filters.city} onChange={(value) => updateFilter('city', value)} options={cityOptions} />
+            <FilterSelect label="Status cidade" value={filters.cityResolution} onChange={(value) => updateFilter('cityResolution', value)} options={cityResolutionOptions} />
+            <FilterSelect label="Franchise" value={filters.franchiseId} onChange={(value) => updateFilter('franchiseId', value)} options={availableFranchiseOptions} />
+            <FilterSelect label="Responsavel (base)" value={filters.responsible} onChange={(value) => updateFilter('responsible', value)} options={responsibleOptions} />
             <FilterSelect label="Conceito" value={filters.concept} onChange={(value) => updateFilter('concept', value)} options={conceptOptions} />
-            <FilterSelect label="Checkout" value={filters.checkoutType} onChange={(value) => updateFilter('checkoutType', value)} options={checkoutOptions} />
             <FilterSelect label="Rede" value={filters.networkId} onChange={(value) => updateFilter('networkId', value)} options={networkOptions} />
             <FilterSelect label="Categoria" value={filters.categoryId} onChange={(value) => updateFilter('categoryId', value)} options={categoryOptions} />
-            <FilterSelect label="Estado" value={filters.state} onChange={(value) => updateFilter('state', value)} options={stateOptions} />
-            <FilterSelect label="Cidade" value={filters.city} onChange={(value) => updateFilter('city', value)} options={cityOptions} />
+            <FilterSelect label="Checkout" value={filters.checkoutType} onChange={(value) => updateFilter('checkoutType', value)} options={checkoutOptions} />
             <FilterSelect label="Região serviço" value={filters.regionServiceId} onChange={(value) => updateFilter('regionServiceId', value)} options={regionServiceOptions} />
             <FilterSelect label="Região peças" value={filters.regionPartId} onChange={(value) => updateFilter('regionPartId', value)} options={regionPartOptions} />
-            <FilterSelect label="Ativa" value={filters.isActive} onChange={(value) => updateFilter('isActive', value)} options={boolOptions} />
+          </div>
+
+          <div className="filter-grid-tight">
+            <FilterSelect label="Status" value={filters.isActive} onChange={(value) => updateFilter('isActive', value)} options={activeStatusOptions} />
             <FilterSelect label="Bloqueada" value={filters.isBlocked} onChange={(value) => updateFilter('isBlocked', value)} options={boolOptions} />
             <FilterSelect label="Offline" value={filters.isOffline} onChange={(value) => updateFilter('isOffline', value)} options={boolOptions} />
             <FilterSelect label="Fee" value={filters.isFee} onChange={(value) => updateFilter('isFee', value)} options={boolOptions} />
@@ -306,164 +452,253 @@ export default function DashboardClient() {
             <FilterSelect label="White label" value={filters.isWhiteLabel} onChange={(value) => updateFilter('isWhiteLabel', value)} options={boolOptions} />
             <FilterSelect label="Dahruj" value={filters.isDahruj} onChange={(value) => updateFilter('isDahruj', value)} options={boolOptions} />
             <FilterSelect label="Sem intermediação" value={filters.isNoIntermediation} onChange={(value) => updateFilter('isNoIntermediation', value)} options={boolOptions} />
-            <FilterSelect label="Recorte geográfico" value={filters.locationScope} onChange={(value) => updateFilter('locationScope', value)} options={locationOptions} />
-            <FilterSelect label="Camada do mapa" value={filters.layerMode} onChange={(value) => updateFilter('layerMode', value)} options={layerOptions} />
           </div>
-        </section>
+        </div>
 
-        <section className="panel compact-panel">
-          <div className="panel-header">
-            <h2>Resumo filtrado</h2>
-            <button className="primary-button" onClick={() => downloadCsv(filteredWorkshops)}>Exportar CSV</button>
-          </div>
-          <div className="summary-list">
-            <div className="summary-item"><span>Recorte atual</span><strong>{currentScopeLabel}</strong></div>
-            <div className="summary-item"><span>Cobertura no Brasil</span><strong>{percent(insideCount, filteredWorkshops.length)}</strong></div>
-            <div className="summary-item"><span>Cidades resolvidas</span><strong>{formatNumber(cityResolvedCount)}</strong></div>
-            <div className="summary-item"><span>Operacionais</span><strong>{formatNumber(operationalCount)}</strong></div>
-            <div className="summary-item"><span>{strategicSummary.dimension === 'city' ? 'Cidades críticas' : 'Estados críticos'}</span><strong>{formatNumber(strategicSummary.criticalStates.length)}</strong></div>
-            <div className="summary-item"><span>{strategicSummary.dimension === 'city' ? 'Cidades ideais' : 'Estados ideais'}</span><strong>{formatNumber(strategicSummary.idealStates.length)}</strong></div>
-          </div>
-        </section>
+        <div className="sidebar-actions">
+          <FilterSelect label="Visao estrategica" value={filters.strategicView} onChange={(value) => updateFilter('strategicView', value)} options={strategicViewOptions} />
+          <FilterSelect label="Mapa base" value={filters.mapTheme} onChange={(value) => updateFilter('mapTheme', value)} options={mapThemeOptions} />
+          <FilterSelect label="Recorte geográfico" value={filters.locationScope} onChange={(value) => updateFilter('locationScope', value)} options={locationOptions} />
+          <button className="primary-button" onClick={() => setFitRequestToken((previous) => previous + 1)} type="button">Reenquadrar mapa</button>
+        </div>
       </aside>
 
-      <main className="main-content">
-        <section className="hero">
+      <main className="command-main">
+        <header className="topbar">
           <div>
-            <p className="eyebrow">Cobertura nacional</p>
-            <h2>Mapa de calor do Brasil</h2>
-            <p className="muted">
-              {formatNumber(filteredWorkshops.length)} oficinas no recorte, {formatNumber(activeCount)} ativas, {formatNumber(operationalCount)} operacionais e foco atual em {currentScopeLabel}.
-            </p>
+          <div className="title-row">
+            <h1>Capilaridade das Oficinas</h1>
+            <span className="scope-pill">{currentScopeLabel}</span>
           </div>
-          <div className="legend-box">
-            <span>Baixa densidade</span>
-            <div className="legend-gradient" />
-            <span>Alta densidade</span>
+          <p>Análise de distribuição, cobertura operacional e oportunidades de expansão da rede credenciada.</p>
+        </div>
+        <div className="topbar-status">
+          <div>
+            <span>Última atualização</span>
+            <strong>Hoje, base filtrada</strong>
           </div>
-        </section>
+          <button className="icon-button" onClick={() => setFitRequestToken((previous) => previous + 1)} title="Atualizar enquadramento" type="button">↻</button>
+          <div className="operator-card">
+            <span className="operator-avatar">DB</span>
+            <div>
+              <strong>DriveB</strong>
+              <span>{filters.franchiseId === 'all' ? 'Franchises 1 e 2' : `Franchise ${filters.franchiseId}`}</span>
+            </div>
+          </div>
+        </div>
+        </header>
 
         <section className="kpi-grid">
-          <article className="kpi-card">
-            <div className="kpi-label">Oficinas filtradas</div>
-            <div className="kpi-value">{formatNumber(filteredWorkshops.length)}</div>
-            <div className="kpi-meta">{formatNumber(workshops.length)} registros na base</div>
-          </article>
-          <article className="kpi-card">
-            <div className="kpi-label">Operacionais</div>
-            <div className="kpi-value">{formatNumber(operationalCount)}</div>
-            <div className="kpi-meta">{percent(operationalCount, filteredWorkshops.length)} da seleção atual</div>
-          </article>
-          <article className="kpi-card">
-            <div className="kpi-label">{strategicSummary.dimension === 'city' ? 'Cidades críticas' : 'Estados críticos'}</div>
-            <div className="kpi-value">{formatNumber(strategicSummary.criticalStates.length)}</div>
-            <div className="kpi-meta">Sem 1 oficina + 1 vidros + 1 pneus</div>
-          </article>
-          <article className="kpi-card">
-            <div className="kpi-label">Redes no recorte</div>
-            <div className="kpi-value">{formatNumber(networkCount)}</div>
-            <div className="kpi-meta">{formatNumber(outsideCount)} pontos fora do Brasil</div>
-          </article>
-        </section>
-
-        <section className={`quality-banner ${totalOutside ? '' : 'hidden'}`}>
-          A base possui <strong>{formatNumber(totalOutside)}</strong> registros fora do bounding box do Brasil. No filtro atual, <strong>{formatNumber(outsideCount)}</strong> aparecem fora do país. O dashboard inicia priorizando apenas coordenadas brasileiras para evitar distorção no mapa de calor.
-        </section>
-
-        <section className="map-panel panel wide-panel">
-          <div className="panel-header stacked-mobile">
-            <div>
-              <h2>Distribuição geográfica</h2>
-              <p className="muted">Heatmap, pontos clicáveis, leitura por estado e navegação sincronizada com a lista.</p>
-            </div>
-            <button className="ghost-button" onClick={() => setFitRequestToken((previous) => previous + 1)}>Reenquadrar mapa</button>
-          </div>
-          <MapView
-            workshops={filteredWorkshops}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-            layerMode={filters.layerMode}
-            fitRequestToken={fitRequestToken}
+          <KpiCard
+            label="Total no recorte"
+            value={formatNumber(filteredWorkshops.length)}
+            meta={`${formatNumber(workshops.length)} registros na base`}
+            badge="+ base atual"
+            icon="▦"
+          />
+          <KpiCard
+            label="Gaps mínimos"
+            value={formatNumber(minimumGapTotal)}
+            meta={`${formatNumber(idealGapTotal)} para meta ideal`}
+            tone="amber"
+            badge={minimumGapTotal ? 'Alvo' : 'Atendido'}
+            icon="●"
+          />
+          <KpiCard
+            label={`${strategicScopeLabel} criticas`}
+            value={formatNumber(strategicSummary.criticalStates.length)}
+            meta={`${formatNumber(blockedCount)} bloqueadas no recorte`}
+            tone="rose"
+            badge={strategicSummary.criticalStates.length ? 'Atenção' : 'OK'}
+            icon="!"
+          />
+          <KpiCard
+            label="Taxa operacional"
+            value={percent(operationalCount, filteredWorkshops.length)}
+            meta={`${formatNumber(activeCount)} ativas`}
+            tone="green"
+            badge={operationalCount ? 'Monitorada' : 'Sem dados'}
+            icon="◷"
           />
         </section>
 
-        <section className="analytics-grid">
-          <div className="panel wide-panel">
-            <div className="panel-header">
-              <h2>Distribuição por conceito</h2>
-              <span className="muted">Peso relativo da seleção atual</span>
-            </div>
-            <div className="breakdown-list">
-              <Breakdown data={conceptDistribution} formatter={(label) => label} />
-            </div>
-          </div>
-          <div className="panel wide-panel">
-            <div className="panel-header">
-              <h2>{filters.state === 'all' ? 'Distribuição por estado' : 'Distribuição por cidade'}</h2>
-              <span className="muted">{filters.state === 'all' ? 'Maiores concentrações do filtro' : 'Cidades mais fortes dentro do estado selecionado'}</span>
-            </div>
-            <div className="breakdown-list">
-              <Breakdown
-                data={filters.state === 'all' ? stateDistribution : cityDistribution}
-                formatter={(label) => (filters.state === 'all' ? formatStateLabel(label) : label)}
-              />
-            </div>
-          </div>
+        <section className={`data-alert ${totalOutside ? '' : 'hidden'}`}>
+          <strong>{formatNumber(totalOutside)}</strong> registros da base estão fora do bounding box do Brasil; no recorte atual são <strong>{formatNumber(outsideCount)}</strong>.
         </section>
 
-        <section className="strategy-grid">
-          <div className="panel wide-panel">
-            <div className="panel-header">
-              <h2>Radar estratégico</h2>
-              <span className="muted">Recalcula em tempo real em nível de {strategicSummary.dimension === 'city' ? 'cidade' : 'estado'}</span>
+        <section className="dashboard-grid">
+          <article className="panel map-panel">
+            <div className="panel-heading">
+              <div>
+                <h2>Heatmap de Capilaridade</h2>
+                <p>
+                  Mapa, pontos clicaveis e reenquadramento conforme filtros ativos.
+                  {cityResolvedCount ? ` ${percent(cityResolvedCount, filteredWorkshops.length)} do recorte ja esta agregado por cidade.` : ' Sem cidade resolvida no recorte atual.'}
+                  {unresolvedCityCount ? ` ${formatNumber(unresolvedCityCount)} registros ainda estao sem cidade.` : ''}
+                </p>
+              </div>
+              <SegmentedControl value={filters.layerMode} onChange={(value) => updateFilter('layerMode', value)} options={layerOptions} />
             </div>
-            <div className="strategy-copy">
-              <strong>{strategicSummary.headline}</strong>
-              <p className="muted">{strategicSummary.narrative}</p>
-            </div>
-            <div className="summary-list strategy-mini-kpis">
-              <div className="summary-item"><span>{strategicSummary.dimension === 'city' ? 'Cidades analisadas' : 'Estados analisados'}</span><strong>{formatNumber(strategicSummary.reports.length)}</strong></div>
-              <div className="summary-item"><span>Em atenção</span><strong>{formatNumber(strategicSummary.attentionStates.length)}</strong></div>
-              <div className="summary-item"><span>Meta ideal atendida</span><strong>{formatNumber(strategicSummary.idealStates.length)}</strong></div>
-            </div>
-            <div className="recommendation-list">
-              {strategicSummary.recommendations.map((item) => (
-                <RecommendationItem key={item.title} item={item} />
-              ))}
-            </div>
-          </div>
+            <MapView
+              workshops={filteredWorkshops}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              layerMode={filters.layerMode}
+              mapTheme={filters.mapTheme}
+              fitRequestToken={fitRequestToken}
+            />
+          </article>
 
-          <div className="panel wide-panel">
-            <div className="panel-header">
-              <h2>Onde atacar primeiro</h2>
-              <span className="muted">Prioridade para preencher pilares mínimos e depois adensar em {strategicSummary.dimension === 'city' ? 'cidades' : 'estados'}</span>
+          <aside className="panel priority-panel">
+            <div className="panel-heading">
+              <div>
+                <h2>Alvos Prioritarios</h2>
+                <p>{strategicScopeLabel} com maior deficit de cobertura no recorte atual.</p>
+              </div>
             </div>
             <div className="priority-list">
               {strategicSummary.topPriorityStates.length ? (
-                strategicSummary.topPriorityStates.map((report) => (
-                  <PriorityStateRow key={report.groupKey} report={report} />
+                strategicSummary.topPriorityStates.slice(0, 5).map((report, index) => (
+                  <PriorityTarget key={report.groupKey} report={report} index={index} />
                 ))
               ) : (
                 <p className="muted">Nenhuma localidade com gap no recorte atual.</p>
               )}
             </div>
-          </div>
+          </aside>
         </section>
 
-        <section className="panel wide-panel">
-          <div className="panel-header stacked-mobile">
-            <div>
-              <h2>Oficinas filtradas</h2>
-              <p className="muted">
-                {filteredWorkshops.length
-                  ? `${formatNumber(filteredWorkshops.length)} oficinas no recorte atual. Exibindo ${formatNumber(pageItems.length)} por página.`
-                  : 'Nenhuma oficina encontrada para o filtro atual.'}
-              </p>
+        <section className="analytics-grid compact-analytics">
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Cidades pendentes</h2>
             </div>
-            <div className="pagination-controls">
-              <button className="ghost-button" disabled={currentPage === 1} onClick={() => setPage((previous) => Math.max(1, previous - 1))}>Anterior</button>
-              <span className="muted">Página {currentPage} de {totalPages}</span>
-              <button className="ghost-button" disabled={currentPage === totalPages} onClick={() => setPage((previous) => Math.min(totalPages, previous + 1))}>Próxima</button>
+            <div className="breakdown-list">
+              <div className="breakdown-row">
+                <div className="breakdown-label">
+                  <span className="legend-dot" style={{ background: chartColors[0] }} />
+                  <strong>Cidades resolvidas</strong>
+                </div>
+                <div className="breakdown-track">
+                  <div className="breakdown-fill" style={{ width: `${cityPrecisionRate.toFixed(1)}%`, background: chartColors[0] }} />
+                </div>
+                <span>{formatNumber(cityResolvedCount)}</span>
+              </div>
+              <div className="breakdown-row">
+                <div className="breakdown-label">
+                  <span className="legend-dot" style={{ background: chartColors[3] }} />
+                  <strong>Sem cidade resolvida</strong>
+                </div>
+                <div className="breakdown-track">
+                  <div className="breakdown-fill" style={{ width: `${Math.max(0, 100 - cityPrecisionRate).toFixed(1)}%`, background: chartColors[3] }} />
+                </div>
+                <span>{formatNumber(unresolvedCityCount)}</span>
+              </div>
+            </div>
+          </article>
+
+          <article className="panel priority-panel">
+            <div className="panel-heading">
+              <div>
+                <h2>Estados com pendencia</h2>
+                <p>Onde ainda faltam cidades resolvidas na base atual.</p>
+              </div>
+            </div>
+            <div className="priority-list">
+              {Object.keys(missingCitySummary.byState).length ? (
+                Object.entries(missingCitySummary.byState)
+                  .sort((left, right) => right[1] - left[1])
+                  .slice(0, 6)
+                  .map(([label, value], index) => (
+                    <div className="priority-target attention" key={label}>
+                      <span className="target-rank">{index + 1}</span>
+                      <div>
+                        <strong>{label}</strong>
+                        <p>{formatNumber(value)} registros sem cidade resolvida</p>
+                      </div>
+                      <span className="status-chip attention">Pendencia</span>
+                    </div>
+                  ))
+              ) : (
+                <p className="muted">Nenhuma pendencia de cidade no recorte atual.</p>
+              )}
+            </div>
+          </article>
+        </section>
+
+        <section className="analytics-grid">
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Distribuição por Cobertura</h2>
+            </div>
+            <DonutChart data={coverageDistribution} formatter={(label) => label} />
+          </article>
+
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Radar de Performance Regional</h2>
+            </div>
+            <RadarChart current={radarCurrent} reference={radarReference} />
+          </article>
+        </section>
+
+        <section className="analytics-grid compact-analytics">
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Distribuicao por Franchise</h2>
+            </div>
+            <Breakdown data={franchiseDistribution} formatter={(label) => `Franchise ${label}`} />
+          </article>
+
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Distribuicao por Conceito</h2>
+            </div>
+            <Breakdown data={conceptDistribution} formatter={(label) => label} />
+          </article>
+        </section>
+
+        <section className="analytics-grid compact-analytics">
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>{strategicDimension === 'city' ? 'Distribuicao por Cidade' : strategicDimension === 'state' ? 'Distribuicao por Estado' : strategicDimension === 'region_service' ? 'Distribuicao por Regiao de servico' : 'Distribuicao por Regiao de pecas'}</h2>
+            </div>
+            <Breakdown
+              data={strategicDimension === 'city' ? cityDistribution : strategicDimension === 'state' ? stateDistribution : strategicDimension === 'region_service' ? countBy(filteredWorkshops.filter((item) => item.regionServiceLabel), 'regionServiceLabel') : countBy(filteredWorkshops.filter((item) => item.regionPartLabel), 'regionPartLabel')}
+              formatter={(label) => (strategicDimension === 'state' ? formatStateLabel(label) : label)}
+            />
+          </article>
+
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Amostra sem cidade</h2>
+            </div>
+            <div className="priority-list">
+              {missingCitySummary.sample.length ? (
+                missingCitySummary.sample.map((item, index) => (
+                  <CityGapItem key={`${item.id}-${index}`} item={item} index={index} />
+                ))
+              ) : (
+                <p className="muted">Nenhuma oficina sem cidade resolvida no recorte atual.</p>
+              )}
+            </div>
+          </article>
+        </section>
+
+        <section className="panel table-panel">
+          <div className="panel-heading table-heading">
+            <div>
+              <h2>Oficinas Filtradas</h2>
+              <p>Mostrando {formatNumber(pageItems.length)} de {formatNumber(filteredWorkshops.length)} registros no recorte atual.</p>
+            </div>
+            <div className="table-actions">
+              <input
+                type="search"
+                placeholder="Buscar oficina..."
+                value={filters.search}
+                onChange={(event) => updateFilter('search', event.target.value)}
+              />
+              <button className="icon-button" onClick={() => downloadCsv(filteredWorkshops)} title="Exportar CSV" type="button">⇩</button>
             </div>
           </div>
 
@@ -471,44 +706,58 @@ export default function DashboardClient() {
             <table>
               <thead>
                 <tr>
-                  <th>Oficina</th>
-                  <th>Conceito</th>
+                  <th>Nome da oficina</th>
+                  <th>Estado</th>
+                  <th>Cobertura</th>
                   <th>Rede</th>
                   <th>Status</th>
-                  <th>Coordenadas</th>
                   <th>Contato</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {pageItems.map((item) => (
-                  <tr key={item.id} className={selectedId === item.id ? 'is-selected' : ''} onClick={() => setSelectedId(item.id)}>
+                  <tr
+                    key={item.id}
+                    className={`${selectedId === item.id ? 'is-selected' : ''} ${!item.isOperational ? 'is-alert' : ''}`}
+                    onClick={() => setSelectedId(item.id)}
+                  >
                     <td>
-                      <div className="result-name">{item.displayName}</div>
-                      <div className="result-subtitle">SAP {item.sapId || '-'} · {item.cityDisplayName || formatStateLabel(item.stateCode)} · {item.coverageLabel}</div>
-                      <WorkshopBadges item={item} />
+                      <div className="workshop-title">
+                        <span className="row-icon" aria-hidden="true">⌁</span>
+                        <div>
+                          <strong>{item.displayName}</strong>
+                          <span>SAP {item.sapId || '-'} · {item.corporateName || 'Sem razão social'}</span>
+                        </div>
+                      </div>
                     </td>
-                    <td>{item.concept || 'N/D'}</td>
-                    <td>Rede {item.networkId || '-'}<br /><span className="result-subtitle">Categoria {item.categoryId || '-'}</span></td>
+                    <td>{item.cityDisplayName || `Cidade pendente - ${formatStateLabel(item.stateCode)}`}</td>
+                    <td><WorkshopBadges item={item} /></td>
+                    <td>Rede {item.networkId || '-'}<br /><span className="muted-small">Franchise {item.franchiseId || '-'} | Categoria {item.categoryId || '-'}</span></td>
                     <td>
-                      {item.isActive ? 'Ativa' : 'Inativa'}<br />
-                      {item.isBlocked ? 'Bloqueada' : 'Disponível'}<br />
-                      {item.isOffline ? 'Offline' : 'Online'}
-                      {item.checkoutType && item.checkoutType !== 'NO' ? <><br />Checkout {item.checkoutType.toLowerCase()}</> : null}
+                      <span className={`status-chip ${item.isOperational ? 'ideal' : item.isBlocked ? 'critical' : 'attention'}`}>
+                        {item.isOperational ? 'Operacional' : item.isBlocked ? 'Bloqueada' : 'Monitorar'}
+                      </span>
                     </td>
+                    <td>{item.phone || item.ownerMobilePhone || 'N/D'}<br /><span className="muted-small">{item.email || item.ownerEmail || 'Sem e-mail'}</span></td>
                     <td>
-                      {item.lat.toFixed(5)}, {item.lng.toFixed(5)}<br />
-                      <a className="link-button" href={googleMapsUrl(item)} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
-                        abrir mapa
+                      <a className="action-link" href={googleMapsUrl(item)} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
+                        Mapa
                       </a>
-                    </td>
-                    <td>
-                      {item.phone || item.ownerMobilePhone || 'N/D'}<br />
-                      <span className="result-subtitle">{item.email || item.ownerEmail || 'Sem e-mail'}</span>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div className="pagination-bar">
+            <span>Mostrando página {currentPage} de {totalPages}</span>
+            <div>
+              <button className="icon-button" disabled={currentPage === 1} onClick={() => setPage((previous) => Math.max(1, previous - 1))} type="button">‹</button>
+              <button className="page-button is-active" type="button">{currentPage}</button>
+              <button className="icon-button" disabled={currentPage === totalPages} onClick={() => setPage((previous) => Math.min(totalPages, previous + 1))} type="button">›</button>
+            </div>
           </div>
         </section>
       </main>

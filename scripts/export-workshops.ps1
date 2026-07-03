@@ -78,7 +78,6 @@ try {
   foreach ($cell in $rows[0].c) { $headers[(Get-ColIndex $cell.r)] = Get-CellValue $cell $sharedStrings }
 
   $records = New-Object System.Collections.Generic.List[object]
-
   foreach ($row in ($rows | Select-Object -Skip 1)) {
     $raw = @{}
     foreach ($cell in $row.c) {
@@ -86,6 +85,8 @@ try {
       $header = $headers[$index]
       if ($header) { $raw[$header] = Get-CellValue $cell $sharedStrings }
     }
+
+    $franchiseId = Convert-ToPlainText $raw['franchise_id']
 
     $lat = if ($raw['latitude']) { [double]::Parse($raw['latitude'], [System.Globalization.CultureInfo]::InvariantCulture) } else { [double]::NaN }
     $lng = if ($raw['longitude']) { [double]::Parse($raw['longitude'], [System.Globalization.CultureInfo]::InvariantCulture) } else { [double]::NaN }
@@ -107,7 +108,7 @@ try {
       cityStateCode = if ($cityCacheEntry) { Convert-ToPlainText $cityCacheEntry.cityStateCode } else { '' };
       cityKey = if ($cityCacheEntry) { Convert-ToPlainText $cityCacheEntry.cityKey } else { '' };
       citySource = if ($cityCacheEntry) { Convert-ToPlainText $cityCacheEntry.source } else { '' };
-      googleMapsId = Convert-ToPlainText $raw['google_maps_id']; purchaseOrder = Convert-ToPlainText $raw['purchase_order']; stateRegistration = Convert-ToPlainText $raw['state_registration']; franchiseId = Convert-ToPlainText $raw['franchise_id']
+      googleMapsId = Convert-ToPlainText $raw['google_maps_id']; purchaseOrder = Convert-ToPlainText $raw['purchase_order']; stateRegistration = Convert-ToPlainText $raw['state_registration']; franchiseId = $franchiseId
     }
 
     [void]$records.Add($record)

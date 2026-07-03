@@ -9,6 +9,25 @@ const SOUTH_AMERICA_BOUNDS = [
   [7.5, -28.0],
 ];
 
+const tileThemes = {
+  light: {
+    url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    options: { subdomains: 'abcd' },
+  },
+  voyager: {
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    options: { subdomains: 'abcd' },
+  },
+  dark: {
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    options: { subdomains: 'abcd' },
+  },
+};
+
+function getTileThemeConfig(theme) {
+  return tileThemes[theme] || tileThemes.light;
+}
+
 function getHeatStyle(zoom) {
   if (zoom <= 4) return { radius: 18, blur: 14, minOpacity: 0.2 };
   if (zoom <= 5) return { radius: 20, blur: 16, minOpacity: 0.22 };
@@ -38,11 +57,32 @@ function getGridSize(zoom) {
   return 0;
 }
 
-function buildHeatPoints(workshops, zoom) {
+function buildCityBuckets(workshops) {
+  const buckets = new Map();
+  workshops.forEach((item) => {
+    if (!item.cityKey || !item.cityName) return;
+    const key = `city:${item.cityKey}`;
+    const current = buckets.get(key) || { count: 0, latSum: 0, lngSum: 0, blocked: 0 };
+    current.count += 1;
+    current.latSum += item.lat;
+    current.lngSum += item.lng;
+    current.blocked += item.isBlocked ? 1 : 0;
+    buckets.set(key, current);
+  });
+
+  return buckets;
+}
+
+function buildCoordinateBuckets(workshops, zoom) {
   const gridSize = getGridSize(zoom);
 
   if (!gridSize) {
-    return workshops.map((item) => [item.lat, item.lng, item.isBlocked ? 0.35 : 0.55]);
+    return workshops.map((item) => ({
+      count: 1,
+      lat: item.lat,
+      lng: item.lng,
+      blockedRatio: item.isBlocked ? 1 : 0,
+    }));
   }
 
   const buckets = new Map();
@@ -58,28 +98,58 @@ function buildHeatPoints(workshops, zoom) {
     buckets.set(key, current);
   });
 
-  const grouped = [...buckets.values()];
+  return [...buckets.values()].map((bucket) => ({
+    count: bucket.count,
+    lat: bucket.latSum / bucket.count,
+    lng: bucket.lngSum / bucket.count,
+    blockedRatio: bucket.blocked / bucket.count,
+  }));
+}
+
+function buildHeatPoints(workshops, zoom) {
+  const resolvedByCity = [];
+  const unresolved = [];
+
+  workshops.forEach((item) => {
+    if (item.cityKey && item.cityName) {
+      resolvedByCity.push(item);
+      return;
+    }
+    unresolved.push(item);
+  });
+
+  const cityBuckets = [...buildCityBuckets(resolvedByCity).values()].map((bucket) => ({
+    count: bucket.count,
+    lat: bucket.latSum / bucket.count,
+    lng: bucket.lngSum / bucket.count,
+    blockedRatio: bucket.blocked / bucket.count,
+  }));
+  const coordinateBuckets = buildCoordinateBuckets(unresolved, zoom);
+  const grouped = [...cityBuckets, ...coordinateBuckets];
+
+  if (!grouped.length) return [];
+
   const peak = grouped.reduce((max, bucket) => Math.max(max, bucket.count), 1);
 
   return grouped.map((bucket) => {
-    const blockedRatio = bucket.blocked / bucket.count;
     const normalized = bucket.count / peak;
-    const weight = Math.min(1, 0.18 + normalized * 0.72 - blockedRatio * 0.08);
+    const weight = Math.min(1, 0.18 + normalized * 0.72 - bucket.blockedRatio * 0.08);
 
     return [
-      bucket.latSum / bucket.count,
-      bucket.lngSum / bucket.count,
+      bucket.lat,
+      bucket.lng,
       Math.max(0.12, weight),
     ];
   });
 }
 
-export default function MapView({ workshops, selectedId, onSelect, layerMode, fitRequestToken }) {
+export default function MapView({ workshops, selectedId, onSelect, layerMode, mapTheme, fitRequestToken }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
   const heatLayerRef = useRef(null);
   const markersLayerRef = useRef(null);
+  const tileLayerRef = useRef(null);
   const markerByIdRef = useRef(new Map());
   const [zoom, setZoom] = useState(4);
 
@@ -108,9 +178,10 @@ export default function MapView({ workshops, selectedId, onSelect, layerMode, fi
       map.getPane('markerPaneStrong').style.zIndex = 470;
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      const themeConfig = getTileThemeConfig(mapTheme);
+      tileLayerRef.current = L.tileLayer(themeConfig.url, {
         maxZoom: 18,
-        subdomains: 'abcd',
+        ...themeConfig.options,
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
       }).addTo(map);
 
@@ -146,8 +217,24 @@ export default function MapView({ workshops, selectedId, onSelect, layerMode, fi
       leafletRef.current = null;
       heatLayerRef.current = null;
       markersLayerRef.current = null;
+      tileLayerRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const tileLayer = tileLayerRef.current;
+    const L = leafletRef.current;
+    if (!map || !tileLayer || !L) return;
+
+    map.removeLayer(tileLayer);
+    const themeConfig = getTileThemeConfig(mapTheme);
+    tileLayerRef.current = L.tileLayer(themeConfig.url, {
+      maxZoom: 18,
+      ...themeConfig.options,
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    }).addTo(map);
+  }, [mapTheme]);
 
   useEffect(() => {
     const L = leafletRef.current;
@@ -180,6 +267,7 @@ export default function MapView({ workshops, selectedId, onSelect, layerMode, fi
         `<strong>${item.displayName}</strong><br/>`,
         `<span>${item.corporateName || ''}</span><br/>`,
         `<span>Conceito: ${item.concept || 'N/D'}</span><br/>`,
+        `<span>Franchise: ${item.franchiseId || 'N/D'}</span><br/>`,
         `<span>Estado: ${item.stateCode || 'N/D'}${item.stateName ? ` - ${item.stateName}` : ''}</span><br/>`,
         item.cityDisplayName ? `<span>Cidade: ${item.cityDisplayName}</span><br/>` : '',
         `<span>Cobertura: ${item.coverageLabel || 'Oficina'}</span><br/>`,
