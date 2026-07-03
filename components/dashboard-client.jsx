@@ -477,6 +477,9 @@ export default function DashboardClient() {
             <span>Última atualização</span>
             <strong>Hoje, base filtrada</strong>
           </div>
+          <a className="app-switch-link" href="https://demandpipe-crm.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <span aria-hidden="true">⇄</span> CRM DemandPipe
+          </a>
           <button className="icon-button" onClick={() => setFitRequestToken((previous) => previous + 1)} title="Atualizar enquadramento" type="button">↻</button>
           <div className="operator-card">
             <span className="operator-avatar">DB</span>
