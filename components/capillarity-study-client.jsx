@@ -25,7 +25,9 @@ const statusFilterOptions = [
 const radiusOptions = [
   { value: 0, label: 'Cidade exata' },
   { value: 30, label: 'Ate 30 km' },
+  { value: 40, label: 'Ate 40 km' },
   { value: 50, label: 'Ate 50 km' },
+  { value: 80, label: 'Ate 80 km' },
   { value: 100, label: 'Ate 100 km' },
   { value: 200, label: 'Ate 200 km' },
 ];
