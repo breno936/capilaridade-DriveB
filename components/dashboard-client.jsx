@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import {
   activeStatusOptions,
@@ -13,7 +14,6 @@ import {
   downloadCsv,
   enrichWorkshops,
   filterWorkshops,
-  franchiseOptions,
   formatNumber,
   formatStateLabel,
   googleMapsUrl,
@@ -21,6 +21,8 @@ import {
   locationOptions,
   mapThemeOptions,
   percent,
+  solutionLabel,
+  solutionOptions,
   strategicViewOptions,
   uniqueValues,
 } from '../lib/workshop-utils';
@@ -31,7 +33,9 @@ const MapView = dynamic(() => import('./map-view'), {
 });
 
 const PAGE_SIZE = 10;
-const chartColors = ['#20c7df', '#3b82f6', '#f6b21a', '#7c8aa5', '#16a34a', '#ef4444'];
+const PRIORITY_PAGE_SIZE = 10;
+const MISSING_CITY_PAGE_SIZE = 10;
+const chartColors = ['#6c5dd3', '#2f6fed', '#f97316', '#667085', '#12b76a', '#e5484d'];
 
 function FilterSelect({ label, value, onChange, options }) {
   return (
@@ -48,9 +52,9 @@ function FilterSelect({ label, value, onChange, options }) {
   );
 }
 
-function SegmentedControl({ value, onChange, options }) {
+function SegmentedControl({ value, onChange, options, ariaLabel }) {
   return (
-    <div className="segmented-control" role="group" aria-label="Camada do mapa">
+    <div className="segmented-control" role="group" aria-label={ariaLabel}>
       {options.map((option) => (
         <button
           key={option.value}
@@ -97,7 +101,7 @@ function KpiCard({ label, value, meta, tone = 'cyan', icon, badge }) {
 function WorkshopBadges({ item }) {
   return (
     <div className="badges">
-      <span className="badge info">{item.coverageLabel}</span>
+      <span className="badge info">{item.serviceTypeLabel || item.coverageLabel}</span>
       <span className="badge">{item.concept || 'Sem conceito'}</span>
       <span className="badge">Rede {item.networkId || '-'}</span>
       <span className={`badge ${item.isActive ? 'success' : 'danger'}`}>{item.isActive ? 'Ativa' : 'Inativa'}</span>
@@ -110,14 +114,15 @@ function WorkshopBadges({ item }) {
 
 function PriorityTarget({ report, index }) {
   const statusLabel = report.status === 'critical' ? 'Critico' : report.status === 'attention' ? 'Atencao' : 'Monitorar';
+  const subtitle = [report.locationHint, report.consultantLabel ? `Consultor: ${report.consultantLabel}` : ''].filter(Boolean).join(' · ');
 
   return (
     <div className={`priority-target ${report.status}`}>
       <span className="target-rank">{index + 1}</span>
       <div>
         <strong>{report.groupName}</strong>
-        {report.locationHint ? <span className="muted-small">{report.locationHint}</span> : null}
-        <p>{report.minimumDeficitText ? `Gap minimo: ${report.minimumDeficitText}` : `Gap ideal: ${report.idealDeficitText || 'atendido'}`}</p>
+        {subtitle ? <span className="muted-small">{subtitle}</span> : null}
+        <p>{report.minimumDeficitText ? `Gap minimo de oficina/vidros/pneus: ${report.minimumDeficitText}` : `Gap ideal: ${report.idealDeficitText || 'atendido'}`}</p>
       </div>
       <span className={`status-chip ${report.status}`}>{statusLabel}</span>
     </div>
@@ -167,6 +172,29 @@ function Breakdown({ data, formatter }) {
   );
 }
 
+function GapPercentChart({ reports }) {
+  const entries = reports.filter((report) => report.minimumGap > 0 || report.idealGap > 0).slice(0, 8);
+
+  if (!entries.length) return <p className="muted">Sem gaps percentuais no recorte atual.</p>;
+
+  return (
+    <div className="gap-chart">
+      {entries.map((report) => (
+        <div className="gap-row" key={report.groupKey}>
+          <div className="gap-row-head">
+            <strong>{report.groupName}</strong>
+            <span>{report.consultantLabel ? `Consultor: ${report.consultantLabel} · ` : ''}{percent(report.idealGap, 6)} de GAP ideal</span>
+          </div>
+          <div className="gap-track">
+            <div className={`gap-fill ${report.status}`} style={{ width: `${report.idealGapPercent.toFixed(1)}%` }} />
+          </div>
+          <p>Falta para o minimo (1 de cada pilar): {report.minimumDeficitText || 'atendido'}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function DonutChart({ data, formatter }) {
   const entries = Object.entries(data).sort((left, right) => right[1] - left[1]).slice(0, 5);
   const total = entries.reduce((sum, [, value]) => sum + value, 0);
@@ -178,7 +206,7 @@ function DonutChart({ data, formatter }) {
       cursor = end;
       return `${chartColors[index % chartColors.length]} ${start}deg ${end}deg`;
     }).join(', ')
-    : '#1c2437 0deg 360deg';
+    : '#e4e7ec 0deg 360deg';
 
   return (
     <div className="donut-layout">
@@ -202,7 +230,7 @@ function DonutChart({ data, formatter }) {
 }
 
 function RadarChart({ current, reference }) {
-  const labels = ['Volume', 'Operação', 'Cobertura', 'Qualidade', 'Diversidade'];
+  const labels = ['Volume', 'Operacao', 'Cobertura', 'Qualidade', 'Diversidade'];
   const size = 260;
   const center = size / 2;
   const maxRadius = 92;
@@ -246,20 +274,50 @@ function RadarChart({ current, reference }) {
       </svg>
       <div className="radar-legend">
         <span><i className="legend-line cyan" />Recorte atual</span>
-        <span><i className="legend-line amber" />Meta de referência</span>
+        <span><i className="legend-line amber" />Meta de referencia</span>
       </div>
     </div>
   );
 }
 
-export default function DashboardClient() {
+function MiniPagination({ currentPage, totalPages, onPrevious, onNext }) {
+  return (
+    <div className="mini-pagination">
+      <span>Pagina {currentPage} de {totalPages}</span>
+      <div>
+        <button className="icon-button" disabled={currentPage === 1} onClick={onPrevious} type="button">‹</button>
+        <button className="icon-button" disabled={currentPage === totalPages} onClick={onNext} type="button">›</button>
+      </div>
+    </div>
+  );
+}
+
+export default function DashboardClient({ initialCityCache = [], initialWorkshopCategories = [] }) {
   const [workshops, setWorkshops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState(defaultFilters);
   const [page, setPage] = useState(1);
+  const [priorityPage, setPriorityPage] = useState(1);
+  const [missingCityPage, setMissingCityPage] = useState(1);
   const [selectedId, setSelectedId] = useState(null);
   const [fitRequestToken, setFitRequestToken] = useState(0);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (!isMapFullscreen) return undefined;
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setIsMapFullscreen(false);
+    }
+
+    document.body.classList.add('map-fullscreen-active');
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.classList.remove('map-fullscreen-active');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMapFullscreen]);
 
   useEffect(() => {
     let cancelled = false;
@@ -271,11 +329,11 @@ export default function DashboardClient() {
         if (!response.ok) throw new Error(`Falha ao carregar dataset (${response.status})`);
         const payload = await response.json();
         if (!cancelled) {
-          setWorkshops(enrichWorkshops(payload));
+          setWorkshops(enrichWorkshops(payload, initialCityCache, initialWorkshopCategories));
           setError('');
         }
       } catch (loadError) {
-        if (!cancelled) setError(loadError.message || 'Não foi possível carregar o dataset.');
+        if (!cancelled) setError(loadError.message || 'Nao foi possivel carregar o dataset.');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -285,7 +343,7 @@ export default function DashboardClient() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialCityCache, initialWorkshopCategories]);
 
   const filteredWorkshops = useMemo(() => filterWorkshops(workshops, filters), [filters, workshops]);
 
@@ -301,15 +359,26 @@ export default function DashboardClient() {
     () => [{ value: 'all', label: 'Todos' }, ...uniqueValues(workshops, 'checkoutType').map((value) => ({ value, label: value }))],
     [workshops],
   );
+  const consultantOptions = useMemo(
+    () => [{ value: 'all', label: 'Todos' }, ...uniqueValues(workshops, 'consultantLabel').map((value) => ({ value, label: value }))],
+    [workshops],
+  );
   const responsibleOptions = useMemo(
     () => [{ value: 'all', label: 'Todos' }, ...uniqueValues(workshops, 'responsibleLabel').map((value) => ({ value, label: value }))],
     [workshops],
   );
-  const availableFranchiseOptions = franchiseOptions;
   const networkOptions = useMemo(
     () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'networkId').map((value) => ({ value, label: `Rede ${value}` }))],
     [workshops],
   );
+  const brandOptions = useMemo(() => {
+    const labels = new Map();
+    workshops.forEach((item) => { if (item.brandSlug) labels.set(item.brandSlug, item.brandLabel); });
+    return [
+      { value: 'all', label: 'Todas' },
+      ...[...labels.entries()].sort((left, right) => left[1].localeCompare(right[1], 'pt-BR')).map(([value, label]) => ({ value, label })),
+    ];
+  }, [workshops]);
   const categoryOptions = useMemo(
     () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'categoryId').map((value) => ({ value, label: `Categoria ${value}` }))],
     [workshops],
@@ -329,11 +398,11 @@ export default function DashboardClient() {
     return [{ value: 'all', label: 'Todas' }, ...uniqueCities.map(([value, label]) => ({ value, label }))];
   }, [filters.state, workshops]);
   const regionServiceOptions = useMemo(
-    () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'regionServiceId').map((value) => ({ value, label: `Serviço ${value}` }))],
+    () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'regionServiceId').map((value) => ({ value, label: `Servico ${value}` }))],
     [workshops],
   );
   const regionPartOptions = useMemo(
-    () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'regionPartId').map((value) => ({ value, label: `Peças ${value}` }))],
+    () => [{ value: 'all', label: 'Todas' }, ...uniqueValues(workshops, 'regionPartId').map((value) => ({ value, label: `Pecas ${value}` }))],
     [workshops],
   );
 
@@ -360,10 +429,11 @@ export default function DashboardClient() {
     : strategicDimension === 'state'
       ? 'Estados'
       : strategicDimension === 'region_service'
-        ? 'Regiões de serviço'
-        : 'Regiões de peças';
-  const minimumGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.minimumGap, 0);
-  const idealGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.idealGap, 0);
+        ? 'Regioes de servico'
+        : 'Regioes de pecas';
+  const oficinaGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.minimumDeficit.oficina, 0);
+  const vidrosGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.minimumDeficit.vidros, 0);
+  const pneusGapTotal = strategicSummary.reports.reduce((sum, report) => sum + report.minimumDeficit.pneus, 0);
   const conceptDistribution = countBy(filteredWorkshops, 'concept');
   const coverageDistribution = countBy(filteredWorkshops, 'coverageLabel');
   const stateDistribution = countBy(filteredWorkshops.filter((item) => item.stateCode), 'stateCode');
@@ -379,21 +449,37 @@ export default function DashboardClient() {
   ];
   const radarReference = [78, 88, 82, 94, 70];
 
+  const priorityTotalPages = Math.max(1, Math.ceil(strategicSummary.topPriorityStates.length / PRIORITY_PAGE_SIZE));
+  const currentPriorityPage = Math.min(priorityPage, priorityTotalPages);
+  const priorityItems = strategicSummary.topPriorityStates.slice((currentPriorityPage - 1) * PRIORITY_PAGE_SIZE, currentPriorityPage * PRIORITY_PAGE_SIZE);
+
+  const missingCityTotalPages = Math.max(1, Math.ceil(missingCitySummary.items.length / MISSING_CITY_PAGE_SIZE));
+  const currentMissingCityPage = Math.min(missingCityPage, missingCityTotalPages);
+  const missingCityItems = missingCitySummary.items.slice((currentMissingCityPage - 1) * MISSING_CITY_PAGE_SIZE, currentMissingCityPage * MISSING_CITY_PAGE_SIZE);
+
   function updateFilter(key, value) {
-    setFilters((previous) => (key === 'state' ? { ...previous, state: value, city: 'all' } : { ...previous, [key]: value }));
+    setFilters((previous) => {
+      if (key === 'state') return { ...previous, state: value, city: 'all' };
+      if (key === 'franchiseId' && value === '1') return { ...previous, franchiseId: value, locationScope: 'in_brazil' };
+      return { ...previous, [key]: value };
+    });
     setPage(1);
+    setPriorityPage(1);
+    setMissingCityPage(1);
     setFitRequestToken((previous) => previous + 1);
   }
 
   function resetFilters() {
     setFilters(defaultFilters);
     setPage(1);
+    setPriorityPage(1);
+    setMissingCityPage(1);
     setSelectedId(null);
     setFitRequestToken((previous) => previous + 1);
   }
 
   if (loading) {
-    return <StatusCard title="Carregando dashboard" description="Lendo o dataset exportado e preparando a visão operacional." />;
+    return <StatusCard title="Carregando dashboard" description="Lendo o dataset exportado e preparando a visao operacional." />;
   }
 
   if (error) {
@@ -413,9 +499,19 @@ export default function DashboardClient() {
           </div>
         </div>
 
+        <div className="solution-panel">
+          <span className="solution-eyebrow">Solucao</span>
+          <SegmentedControl
+            value={filters.franchiseId}
+            onChange={(value) => updateFilter('franchiseId', value)}
+            options={solutionOptions}
+            ariaLabel="Solucao"
+          />
+        </div>
+
         <div className="filter-panel">
           <div className="panel-heading compact">
-            <span>Filtros estratégicos</span>
+            <span>Filtros estrategicos</span>
             <button className="text-button" onClick={resetFilters} type="button">Limpar</button>
           </div>
 
@@ -430,17 +526,18 @@ export default function DashboardClient() {
           </label>
 
           <div className="filter-stack">
+            <FilterSelect label="Consultor" value={filters.consultant} onChange={(value) => updateFilter('consultant', value)} options={consultantOptions} />
             <FilterSelect label="Estado (UF)" value={filters.state} onChange={(value) => updateFilter('state', value)} options={stateOptions} />
             <FilterSelect label="Cidade" value={filters.city} onChange={(value) => updateFilter('city', value)} options={cityOptions} />
             <FilterSelect label="Status cidade" value={filters.cityResolution} onChange={(value) => updateFilter('cityResolution', value)} options={cityResolutionOptions} />
-            <FilterSelect label="Franchise" value={filters.franchiseId} onChange={(value) => updateFilter('franchiseId', value)} options={availableFranchiseOptions} />
             <FilterSelect label="Responsavel (base)" value={filters.responsible} onChange={(value) => updateFilter('responsible', value)} options={responsibleOptions} />
             <FilterSelect label="Conceito" value={filters.concept} onChange={(value) => updateFilter('concept', value)} options={conceptOptions} />
             <FilterSelect label="Rede" value={filters.networkId} onChange={(value) => updateFilter('networkId', value)} options={networkOptions} />
+            <FilterSelect label="Marca" value={filters.brand} onChange={(value) => updateFilter('brand', value)} options={brandOptions} />
             <FilterSelect label="Categoria" value={filters.categoryId} onChange={(value) => updateFilter('categoryId', value)} options={categoryOptions} />
             <FilterSelect label="Checkout" value={filters.checkoutType} onChange={(value) => updateFilter('checkoutType', value)} options={checkoutOptions} />
-            <FilterSelect label="Região serviço" value={filters.regionServiceId} onChange={(value) => updateFilter('regionServiceId', value)} options={regionServiceOptions} />
-            <FilterSelect label="Região peças" value={filters.regionPartId} onChange={(value) => updateFilter('regionPartId', value)} options={regionPartOptions} />
+            <FilterSelect label="Regiao servico" value={filters.regionServiceId} onChange={(value) => updateFilter('regionServiceId', value)} options={regionServiceOptions} />
+            <FilterSelect label="Regiao pecas" value={filters.regionPartId} onChange={(value) => updateFilter('regionPartId', value)} options={regionPartOptions} />
           </div>
 
           <div className="filter-grid-tight">
@@ -449,16 +546,13 @@ export default function DashboardClient() {
             <FilterSelect label="Offline" value={filters.isOffline} onChange={(value) => updateFilter('isOffline', value)} options={boolOptions} />
             <FilterSelect label="Fee" value={filters.isFee} onChange={(value) => updateFilter('isFee', value)} options={boolOptions} />
             <FilterSelect label="Margem" value={filters.isMargin} onChange={(value) => updateFilter('isMargin', value)} options={boolOptions} />
-            <FilterSelect label="White label" value={filters.isWhiteLabel} onChange={(value) => updateFilter('isWhiteLabel', value)} options={boolOptions} />
-            <FilterSelect label="Dahruj" value={filters.isDahruj} onChange={(value) => updateFilter('isDahruj', value)} options={boolOptions} />
-            <FilterSelect label="Sem intermediação" value={filters.isNoIntermediation} onChange={(value) => updateFilter('isNoIntermediation', value)} options={boolOptions} />
           </div>
         </div>
 
         <div className="sidebar-actions">
           <FilterSelect label="Visao estrategica" value={filters.strategicView} onChange={(value) => updateFilter('strategicView', value)} options={strategicViewOptions} />
           <FilterSelect label="Mapa base" value={filters.mapTheme} onChange={(value) => updateFilter('mapTheme', value)} options={mapThemeOptions} />
-          <FilterSelect label="Recorte geográfico" value={filters.locationScope} onChange={(value) => updateFilter('locationScope', value)} options={locationOptions} />
+          <FilterSelect label="Recorte geografico" value={filters.locationScope} onChange={(value) => updateFilter('locationScope', value)} options={locationOptions} />
           <button className="primary-button" onClick={() => setFitRequestToken((previous) => previous + 1)} type="button">Reenquadrar mapa</button>
         </div>
       </aside>
@@ -466,29 +560,38 @@ export default function DashboardClient() {
       <main className="command-main">
         <header className="topbar">
           <div>
-          <div className="title-row">
-            <h1>Capilaridade das Oficinas</h1>
-            <span className="scope-pill">{currentScopeLabel}</span>
+            <div className="title-row">
+              <h1>Capilaridade das Oficinas</h1>
+              <span className="scope-pill">{currentScopeLabel}</span>
+            </div>
+            <p>Analise de distribuicao, cobertura operacional e oportunidades de expansao da rede credenciada.</p>
           </div>
-          <p>Análise de distribuição, cobertura operacional e oportunidades de expansão da rede credenciada.</p>
-        </div>
-        <div className="topbar-status">
-          <div>
-            <span>Última atualização</span>
-            <strong>Hoje, base filtrada</strong>
-          </div>
-          <a className="app-switch-link" href="https://demandpipe-crm.vercel.app/" target="_blank" rel="noopener noreferrer">
-            <span aria-hidden="true">⇄</span> CRM DemandPipe
-          </a>
-          <button className="icon-button" onClick={() => setFitRequestToken((previous) => previous + 1)} title="Atualizar enquadramento" type="button">↻</button>
-          <div className="operator-card">
-            <span className="operator-avatar">DB</span>
+          <div className="topbar-status">
             <div>
-              <strong>DriveB</strong>
-              <span>{filters.franchiseId === 'all' ? 'Franchises 1 e 2' : `Franchise ${filters.franchiseId}`}</span>
+              <span>Ultima atualizacao</span>
+              <strong>Hoje, base filtrada</strong>
+            </div>
+            <Link className="app-switch-link" href="/estudo-capilaridade">
+              <span aria-hidden="true">▤</span> Estudo de Capilaridade
+            </Link>
+            <Link className="app-switch-link" href="/visao-comercial">
+              <span aria-hidden="true">◆</span> Visao Comercial
+            </Link>
+            <Link className="app-switch-link" href="/radar-precos">
+              <span aria-hidden="true">◎</span> Radar de Precos
+            </Link>
+            <a className="app-switch-link" href="https://demandpipe-crm.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <span aria-hidden="true">⇄</span> CRM DemandPipe
+            </a>
+            <button className="icon-button" onClick={() => setFitRequestToken((previous) => previous + 1)} title="Atualizar enquadramento" type="button">↻</button>
+            <div className="operator-card">
+              <span className="operator-avatar">DB</span>
+              <div>
+                <strong>DriveB</strong>
+                <span>{filters.franchiseId === 'all' ? 'DriveB e Outros' : solutionLabel(filters.franchiseId)}</span>
+              </div>
             </div>
           </div>
-        </div>
         </header>
 
         <section className="kpi-grid">
@@ -496,15 +599,15 @@ export default function DashboardClient() {
             label="Total no recorte"
             value={formatNumber(filteredWorkshops.length)}
             meta={`${formatNumber(workshops.length)} registros na base`}
-            badge="+ base atual"
-            icon="▦"
+            badge="Base atual"
+            icon="◦"
           />
           <KpiCard
-            label="Gaps mínimos"
-            value={formatNumber(minimumGapTotal)}
-            meta={`${formatNumber(idealGapTotal)} para meta ideal`}
+            label="Gap de oficinas"
+            value={formatNumber(oficinaGapTotal)}
+            meta={`+ ${formatNumber(vidrosGapTotal)} vidros e ${formatNumber(pneusGapTotal)} pneus no minimo`}
             tone="amber"
-            badge={minimumGapTotal ? 'Alvo' : 'Atendido'}
+            badge={oficinaGapTotal ? 'Alvo' : 'Atendido'}
             icon="●"
           />
           <KpiCard
@@ -512,7 +615,7 @@ export default function DashboardClient() {
             value={formatNumber(strategicSummary.criticalStates.length)}
             meta={`${formatNumber(blockedCount)} bloqueadas no recorte`}
             tone="rose"
-            badge={strategicSummary.criticalStates.length ? 'Atenção' : 'OK'}
+            badge={strategicSummary.criticalStates.length ? 'Atencao' : 'OK'}
             icon="!"
           />
           <KpiCard
@@ -526,11 +629,11 @@ export default function DashboardClient() {
         </section>
 
         <section className={`data-alert ${totalOutside ? '' : 'hidden'}`}>
-          <strong>{formatNumber(totalOutside)}</strong> registros da base estão fora do bounding box do Brasil; no recorte atual são <strong>{formatNumber(outsideCount)}</strong>.
+          <strong>{formatNumber(totalOutside)}</strong> registros da base estao fora do bounding box do Brasil; no recorte atual sao <strong>{formatNumber(outsideCount)}</strong>.
         </section>
 
         <section className="dashboard-grid">
-          <article className="panel map-panel">
+          <article className={`panel map-panel ${isMapFullscreen ? 'is-fullscreen' : ''}`}>
             <div className="panel-heading">
               <div>
                 <h2>Heatmap de Capilaridade</h2>
@@ -540,7 +643,17 @@ export default function DashboardClient() {
                   {unresolvedCityCount ? ` ${formatNumber(unresolvedCityCount)} registros ainda estao sem cidade.` : ''}
                 </p>
               </div>
-              <SegmentedControl value={filters.layerMode} onChange={(value) => updateFilter('layerMode', value)} options={layerOptions} />
+              <div className="map-panel-controls">
+                <SegmentedControl value={filters.layerMode} onChange={(value) => updateFilter('layerMode', value)} options={layerOptions} ariaLabel="Camada do mapa" />
+                <button
+                  className="icon-button"
+                  onClick={() => setIsMapFullscreen((previous) => !previous)}
+                  title={isMapFullscreen ? 'Sair da tela cheia' : 'Ver mapa em tela cheia'}
+                  type="button"
+                >
+                  {isMapFullscreen ? '⤡' : '⤢'}
+                </button>
+              </div>
             </div>
             <MapView
               workshops={filteredWorkshops}
@@ -549,6 +662,7 @@ export default function DashboardClient() {
               layerMode={filters.layerMode}
               mapTheme={filters.mapTheme}
               fitRequestToken={fitRequestToken}
+              isFullscreen={isMapFullscreen}
             />
           </article>
 
@@ -556,31 +670,40 @@ export default function DashboardClient() {
             <div className="panel-heading">
               <div>
                 <h2>Alvos Prioritarios</h2>
-                <p>{strategicScopeLabel} com maior deficit de cobertura no recorte atual.</p>
+                <p>{strategicScopeLabel} com maior deficit de cobertura no recorte atual. Exibindo {formatNumber(priorityItems.length)} de {formatNumber(strategicSummary.topPriorityStates.length)}.</p>
               </div>
             </div>
             <div className="priority-list">
-              {strategicSummary.topPriorityStates.length ? (
-                strategicSummary.topPriorityStates.slice(0, 5).map((report, index) => (
-                  <PriorityTarget key={report.groupKey} report={report} index={index} />
+              {priorityItems.length ? (
+                priorityItems.map((report, index) => (
+                  <PriorityTarget key={report.groupKey} report={report} index={(currentPriorityPage - 1) * PRIORITY_PAGE_SIZE + index} />
                 ))
               ) : (
                 <p className="muted">Nenhuma localidade com gap no recorte atual.</p>
               )}
             </div>
+            <MiniPagination
+              currentPage={currentPriorityPage}
+              totalPages={priorityTotalPages}
+              onPrevious={() => setPriorityPage((previous) => Math.max(1, previous - 1))}
+              onNext={() => setPriorityPage((previous) => Math.min(priorityTotalPages, previous + 1))}
+            />
           </aside>
         </section>
 
         <section className="analytics-grid compact-analytics">
           <article className="panel">
             <div className="panel-heading">
-              <h2>Cidades pendentes</h2>
+              <div>
+                <h2>Precisao de geocodificacao</h2>
+                <p>Toda oficina tem latitude/longitude. Esse indicador mostra quantas ja tiveram a cidade/UF identificada automaticamente a partir dessa coordenada.</p>
+              </div>
             </div>
             <div className="breakdown-list">
               <div className="breakdown-row">
                 <div className="breakdown-label">
                   <span className="legend-dot" style={{ background: chartColors[0] }} />
-                  <strong>Cidades resolvidas</strong>
+                  <strong>Cidade identificada pela coordenada</strong>
                 </div>
                 <div className="breakdown-track">
                   <div className="breakdown-fill" style={{ width: `${cityPrecisionRate.toFixed(1)}%`, background: chartColors[0] }} />
@@ -590,7 +713,7 @@ export default function DashboardClient() {
               <div className="breakdown-row">
                 <div className="breakdown-label">
                   <span className="legend-dot" style={{ background: chartColors[3] }} />
-                  <strong>Sem cidade resolvida</strong>
+                  <strong>Ainda sem cidade identificada</strong>
                 </div>
                 <div className="breakdown-track">
                   <div className="breakdown-fill" style={{ width: `${Math.max(0, 100 - cityPrecisionRate).toFixed(1)}%`, background: chartColors[3] }} />
@@ -603,8 +726,8 @@ export default function DashboardClient() {
           <article className="panel priority-panel">
             <div className="panel-heading">
               <div>
-                <h2>Estados com pendencia</h2>
-                <p>Onde ainda faltam cidades resolvidas na base atual.</p>
+                <h2>Estados com cidade pendente</h2>
+                <p>Oficinas que tem coordenadas validas, mas cuja cidade/UF ainda nao foi determinada a partir delas. Agrupado pelo estado ja identificado (via coordenada ou DDD).</p>
               </div>
             </div>
             <div className="priority-list">
@@ -617,7 +740,7 @@ export default function DashboardClient() {
                       <span className="target-rank">{index + 1}</span>
                       <div>
                         <strong>{label}</strong>
-                        <p>{formatNumber(value)} registros sem cidade resolvida</p>
+                        <p>{formatNumber(value)} oficinas com coordenada mas sem cidade identificada</p>
                       </div>
                       <span className="status-chip attention">Pendencia</span>
                     </div>
@@ -632,36 +755,50 @@ export default function DashboardClient() {
         <section className="analytics-grid">
           <article className="panel">
             <div className="panel-heading">
-              <h2>Distribuição por Cobertura</h2>
+              <h2>Distribuicao por Cobertura</h2>
             </div>
             <DonutChart data={coverageDistribution} formatter={(label) => label} />
           </article>
 
           <article className="panel">
             <div className="panel-heading">
-              <h2>Radar de Performance Regional</h2>
+              <div>
+                <h2>Porcentagem de Gap</h2>
+                <p>
+                  Gap = quanto falta para a localidade ter, em operacoes ativas e nao bloqueadas, o minimo de 1 oficina + 1 vidros + 1 pneus (ou o ideal de 2 de cada).
+                  Cada barra e uma localidade critica ou em atencao, com o consultor responsavel pela zona.
+                  {filters.consultant !== 'all' ? ` Filtrado para ${filters.consultant}.` : ' Use o filtro "Consultor" para ver so a zona de um consultor.'}
+                </p>
+              </div>
             </div>
-            <RadarChart current={radarCurrent} reference={radarReference} />
+            <GapPercentChart reports={strategicSummary.topPriorityStates} />
           </article>
         </section>
 
         <section className="analytics-grid compact-analytics">
           <article className="panel">
             <div className="panel-heading">
-              <h2>Distribuicao por Franchise</h2>
+              <h2>Radar de Performance Regional</h2>
             </div>
-            <Breakdown data={franchiseDistribution} formatter={(label) => `Franchise ${label}`} />
+            <RadarChart current={radarCurrent} reference={radarReference} />
           </article>
 
+          <article className="panel">
+            <div className="panel-heading">
+              <h2>Distribuicao por Solucao</h2>
+            </div>
+            <Breakdown data={franchiseDistribution} formatter={(label) => solutionLabel(label)} />
+          </article>
+        </section>
+
+        <section className="analytics-grid compact-analytics">
           <article className="panel">
             <div className="panel-heading">
               <h2>Distribuicao por Conceito</h2>
             </div>
             <Breakdown data={conceptDistribution} formatter={(label) => label} />
           </article>
-        </section>
 
-        <section className="analytics-grid compact-analytics">
           <article className="panel">
             <div className="panel-heading">
               <h2>{strategicDimension === 'city' ? 'Distribuicao por Cidade' : strategicDimension === 'state' ? 'Distribuicao por Estado' : strategicDimension === 'region_service' ? 'Distribuicao por Regiao de servico' : 'Distribuicao por Regiao de pecas'}</h2>
@@ -671,20 +808,28 @@ export default function DashboardClient() {
               formatter={(label) => (strategicDimension === 'state' ? formatStateLabel(label) : label)}
             />
           </article>
+        </section>
 
-          <article className="panel">
+        <section className="analytics-grid compact-analytics">
+          <article className="panel priority-panel">
             <div className="panel-heading">
-              <h2>Amostra sem cidade</h2>
+              <h2>Pendencias de cidade</h2>
             </div>
             <div className="priority-list">
-              {missingCitySummary.sample.length ? (
-                missingCitySummary.sample.map((item, index) => (
-                  <CityGapItem key={`${item.id}-${index}`} item={item} index={index} />
+              {missingCityItems.length ? (
+                missingCityItems.map((item, index) => (
+                  <CityGapItem key={`${item.id}-${index}`} item={item} index={(currentMissingCityPage - 1) * MISSING_CITY_PAGE_SIZE + index} />
                 ))
               ) : (
                 <p className="muted">Nenhuma oficina sem cidade resolvida no recorte atual.</p>
               )}
             </div>
+            <MiniPagination
+              currentPage={currentMissingCityPage}
+              totalPages={missingCityTotalPages}
+              onPrevious={() => setMissingCityPage((previous) => Math.max(1, previous - 1))}
+              onNext={() => setMissingCityPage((previous) => Math.min(missingCityTotalPages, previous + 1))}
+            />
           </article>
         </section>
 
@@ -715,7 +860,7 @@ export default function DashboardClient() {
                   <th>Rede</th>
                   <th>Status</th>
                   <th>Contato</th>
-                  <th>Ações</th>
+                  <th>Acoes</th>
                 </tr>
               </thead>
               <tbody>
@@ -730,13 +875,14 @@ export default function DashboardClient() {
                         <span className="row-icon" aria-hidden="true">⌁</span>
                         <div>
                           <strong>{item.displayName}</strong>
-                          <span>SAP {item.sapId || '-'} · {item.corporateName || 'Sem razão social'}</span>
+                          <span>SAP {item.sapId || '-'} · {item.corporateName || 'Sem razao social'}</span>
+                          <span className="muted-small">{item.consultantLabel || 'Sem consultor mapeado'}</span>
                         </div>
                       </div>
                     </td>
                     <td>{item.cityDisplayName || `Cidade pendente - ${formatStateLabel(item.stateCode)}`}</td>
                     <td><WorkshopBadges item={item} /></td>
-                    <td>Rede {item.networkId || '-'}<br /><span className="muted-small">Franchise {item.franchiseId || '-'} | Categoria {item.categoryId || '-'}</span></td>
+                    <td>Rede {item.networkId || '-'}<br /><span className="muted-small">Franchise {item.franchiseId || '-'} | Categoria {item.categoria || item.categoryId || '-'}</span></td>
                     <td>
                       <span className={`status-chip ${item.isOperational ? 'ideal' : item.isBlocked ? 'critical' : 'attention'}`}>
                         {item.isOperational ? 'Operacional' : item.isBlocked ? 'Bloqueada' : 'Monitorar'}
@@ -755,7 +901,7 @@ export default function DashboardClient() {
           </div>
 
           <div className="pagination-bar">
-            <span>Mostrando página {currentPage} de {totalPages}</span>
+            <span>Mostrando pagina {currentPage} de {totalPages}</span>
             <div>
               <button className="icon-button" disabled={currentPage === 1} onClick={() => setPage((previous) => Math.max(1, previous - 1))} type="button">‹</button>
               <button className="page-button is-active" type="button">{currentPage}</button>

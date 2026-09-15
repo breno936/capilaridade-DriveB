@@ -96,6 +96,7 @@ async function reverseLookup(item) {
   const address = payload.address || {};
   const cityName = extractCity(address);
   const cityStateCode = resolveStateCode(address.state);
+  const isBrazil = address.country_code === 'br';
 
   return {
     lookupKey: buildLookupKey(item),
@@ -108,6 +109,7 @@ async function reverseLookup(item) {
     source: 'nominatim',
     fetchedAt: new Date().toISOString(),
     displayName: payload.display_name || '',
+    isBrazil,
   };
 }
 
