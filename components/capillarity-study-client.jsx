@@ -3,7 +3,13 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { coverageTypeLabel, defaultFilters, enrichWorkshops, filterWorkshops, formatNumber } from '../lib/workshop-utils';
-import { generateCapillarityStudy } from '../lib/capillarity-study';
+import {
+  buildCityKey,
+  buildCityLookup,
+  buildCoverageIndex,
+  generateCapillarityStudy,
+  haversineKm,
+} from '../lib/capillarity-study';
 import {
   analyzeHeaderRow,
   analyzeSheet,
@@ -550,25 +556,53 @@ export default function CapillarityStudyClient({ clientId } = {}) {
     setStudy(null);
   }
 
-  // O raio reclassifica como "com cobertura" as cidades sem oficina propria mas com uma
-  // oficina cadastrada a X km de distancia (comparando o centro das cidades). Cidades
-  // nao localizadas na base de referencia continuam sem raio, pois nao tem coordenada.
+  // Indices para o calculo de raio: reconstruidos a partir da base de oficinas atual
+  // (nao do que foi salvo no estudo), entao "Recalcular" e reabrir um estudo antigo
+  // sempre usam a rede vigente. Nao dependem de radiusKm, entao ficam num memo separado.
+  const radiusCoverageIndex = useMemo(() => buildCoverageIndex(workshopsForModel), [workshopsForModel]);
+  const radiusCityLookup = useMemo(() => buildCityLookup(brCities), [brCities]);
+
+  // Com raio selecionado, a quantidade de oficinas de uma cidade passa a ser a SOMA de
+  // todas as oficinas de todas as cidades cobertas dentro daquela distancia (incluindo a
+  // propria cidade, se ja tiver oficina) - nao so a cidade coberta mais proxima. Cidades
+  // nao localizadas na base de referencia (status "unresolved") ficam de fora, pois nao
+  // tem coordenada para medir distancia.
   const adjustedResults = useMemo(() => {
     if (!study) return [];
     if (!radiusKm) return study.results;
+
     return study.results.map((row) => {
-      if (row.status !== 'uncovered' || row.nearestDistanceKm == null || row.nearestDistanceKm > radiusKm) return row;
+      if (row.status === 'unresolved') return row;
+
+      const cityKey = buildCityKey(row.city, row.stateCode || row.state);
+      const target = cityKey ? radiusCityLookup.get(cityKey) : null;
+      if (!target) return row;
+
+      let count = 0;
+      const serviceCounts = {};
+      const brandCounts = {};
+      radiusCoverageIndex.forEach((entry) => {
+        if (haversineKm(target.lat, target.lng, entry.lat, entry.lng) > radiusKm) return;
+        count += entry.count;
+        Object.entries(entry.serviceCounts).forEach(([tag, tagCount]) => {
+          serviceCounts[tag] = (serviceCounts[tag] || 0) + tagCount;
+        });
+        Object.entries(entry.brandCounts).forEach(([brand, brandCount]) => {
+          brandCounts[brand] = (brandCounts[brand] || 0) + brandCount;
+        });
+      });
+
       return {
         ...row,
-        status: 'covered',
-        hasWorkshop: true,
-        workshopCount: row.nearestCoverage?.count ?? 0,
-        serviceCounts: row.nearestCoverage?.serviceCounts ?? null,
-        brandCounts: row.nearestCoverage?.brandCounts ?? null,
-        coveredByRadius: true,
+        status: count > 0 ? 'covered' : 'uncovered',
+        hasWorkshop: count > 0,
+        workshopCount: count,
+        serviceCounts: count > 0 ? serviceCounts : null,
+        brandCounts: count > 0 ? brandCounts : null,
+        coveredByRadius: row.status !== 'covered' && count > 0,
       };
     });
-  }, [study, radiusKm]);
+  }, [study, radiusKm, radiusCoverageIndex, radiusCityLookup]);
 
   const adjustedSummary = useMemo(() => {
     const total = adjustedResults.length;
@@ -1004,7 +1038,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
                           {row.coveredByRadius ? (
                             <>
                               <br />
-                              <span className="muted-small">via raio · {Math.round(row.nearestDistanceKm)} km</span>
+                              <span className="muted-small">via raio de ate {radiusKm} km</span>
                             </>
                           ) : null}
                         </td>
