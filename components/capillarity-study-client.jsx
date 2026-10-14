@@ -9,6 +9,7 @@ import {
   buildCoverageIndex,
   generateCapillarityStudy,
   haversineKm,
+  isHeavyFleetRow,
 } from '../lib/capillarity-study';
 import {
   analyzeHeaderRow,
@@ -20,6 +21,7 @@ import {
 } from '../lib/study-workbook';
 import initialCityCache from '../data/city-cache.json';
 import initialWorkshopCategories from '../data/workshop-categories.json';
+import initialHeavyFleet from '../data/workshop-heavy-fleet.json';
 
 const statusFilterOptions = [
   { value: 'all', label: 'Todas' },
@@ -188,7 +190,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
         const citiesPayload = await citiesResponse.json();
 
         if (!cancelled) {
-          setWorkshops(enrichWorkshops(workshopsPayload, initialCityCache, initialWorkshopCategories));
+          setWorkshops(enrichWorkshops(workshopsPayload, initialCityCache, initialWorkshopCategories, initialHeavyFleet));
           setBrCities(citiesPayload);
           setError('');
         }
@@ -559,7 +561,12 @@ export default function CapillarityStudyClient({ clientId } = {}) {
   // Indices para o calculo de raio: reconstruidos a partir da base de oficinas atual
   // (nao do que foi salvo no estudo), entao "Recalcular" e reabrir um estudo antigo
   // sempre usam a rede vigente. Nao dependem de radiusKm, entao ficam num memo separado.
-  const radiusCoverageIndex = useMemo(() => buildCoverageIndex(workshopsForModel), [workshopsForModel]);
+  // Linha de frota pesada so pode ser coberta por oficina que atende pesado.
+  const radiusCoverageIndexAll = useMemo(() => buildCoverageIndex(workshopsForModel), [workshopsForModel]);
+  const radiusCoverageIndexHeavy = useMemo(
+    () => buildCoverageIndex(workshopsForModel.filter((item) => item.atendePesado)),
+    [workshopsForModel],
+  );
   const radiusCityLookup = useMemo(() => buildCityLookup(brCities), [brCities]);
 
   // Com raio selecionado, a quantidade de oficinas de uma cidade passa a ser a SOMA de
@@ -578,10 +585,12 @@ export default function CapillarityStudyClient({ clientId } = {}) {
       const target = cityKey ? radiusCityLookup.get(cityKey) : null;
       if (!target) return row;
 
+      const coverageIndex = isHeavyFleetRow(row.fleetType) ? radiusCoverageIndexHeavy : radiusCoverageIndexAll;
+
       let count = 0;
       const serviceCounts = {};
       const brandCounts = {};
-      radiusCoverageIndex.forEach((entry) => {
+      coverageIndex.forEach((entry) => {
         if (haversineKm(target.lat, target.lng, entry.lat, entry.lng) > radiusKm) return;
         count += entry.count;
         Object.entries(entry.serviceCounts).forEach(([tag, tagCount]) => {
@@ -602,7 +611,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
         coveredByRadius: row.status !== 'covered' && count > 0,
       };
     });
-  }, [study, radiusKm, radiusCoverageIndex, radiusCityLookup]);
+  }, [study, radiusKm, radiusCoverageIndexAll, radiusCoverageIndexHeavy, radiusCityLookup]);
 
   const adjustedSummary = useMemo(() => {
     const total = adjustedResults.length;

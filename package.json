@@ -8,6 +8,7 @@
     "start": "set NEXT_IGNORE_INCORRECT_LOCKFILE=1&& next start",
     "enrich:cities": "node scripts/enrich-cities.mjs",
     "import:categories": "node scripts/import-workshop-categories.mjs",
+    "import:heavy-fleet": "node scripts/import-heavy-fleet.mjs",
     "migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {

@@ -3,13 +3,19 @@
     "id": 2,
     "descricao": "TABELA 02 - NACIONAL",
     "tabela": "Tabela nacional",
-    "count": 1703
+    "count": 1632
+  },
+  {
+    "id": 38,
+    "descricao": "TABELA 06 - Concessionaria",
+    "tabela": "TABELA CONCESSIONARIA",
+    "count": 333
   },
   {
     "id": 5,
     "descricao": "TABELA 01 - COMBATE",
     "tabela": "Combate",
-    "count": 149
+    "count": 163
   },
   {
     "id": 28,
@@ -21,7 +27,7 @@
     "id": 40,
     "descricao": "TABELA 07 - COMBATE AJUSTADA 2026",
     "tabela": "COMBATE_AJUSTADA_2026",
-    "count": 64
+    "count": 71
   },
   {
     "id": 32,
@@ -36,21 +42,21 @@
     "count": 32
   },
   {
-    "id": 7,
-    "descricao": "GP PNEUS - SP",
-    "tabela": "GP PNEUS",
-    "count": 22
-  },
-  {
     "id": 6,
     "descricao": "ALVORADA/BANA PNEUS",
     "tabela": "ALVORADA PNEUS",
-    "count": 22
+    "count": 28
   },
   {
     "id": 39,
     "descricao": "SO PNEUS",
     "tabela": "SO PNEUS",
+    "count": 22
+  },
+  {
+    "id": 7,
+    "descricao": "GP PNEUS - SP",
+    "tabela": "GP PNEUS",
     "count": 22
   },
   {
@@ -60,10 +66,10 @@
     "count": 21
   },
   {
-    "id": 3,
-    "descricao": "TABELA 03 - NACIONAL + 20%",
-    "tabela": "Servicos 20%+ALBL 20%+Pecas 10%",
-    "count": 15
+    "id": 27,
+    "descricao": "Campneus - 02",
+    "tabela": "AC  ES  GO  MT  MS  PA  PI  RR   RO  SC",
+    "count": 14
   },
   {
     "id": 30,
@@ -72,16 +78,16 @@
     "count": 14
   },
   {
-    "id": 27,
-    "descricao": "Campneus - 02",
-    "tabela": "AC  ES  GO  MT  MS  PA  PI  RR   RO  SC",
-    "count": 14
-  },
-  {
     "id": 20,
     "descricao": "GP PNEUS - PR",
     "tabela": "GP PNEUS - PR",
     "count": 13
+  },
+  {
+    "id": 3,
+    "descricao": "TABELA 03 - NACIONAL + 20%",
+    "tabela": "Servicos 20%+ALBL 20%+Pecas 10%",
+    "count": 10
   },
   {
     "id": 13,
@@ -96,28 +102,22 @@
     "count": 8
   },
   {
-    "id": 31,
-    "descricao": "GP PNEUS - MT",
-    "tabela": "GP PNEUS MT",
-    "count": 7
-  },
-  {
-    "id": 38,
-    "descricao": "TABELA 06 - Concessionaria",
-    "tabela": "TABELA CONCESSIONARIA",
-    "count": 7
-  },
-  {
     "id": 12,
     "descricao": "GP PNEUS - GO",
     "tabela": "GP PNEUS - GO",
     "count": 7
   },
   {
+    "id": 31,
+    "descricao": "GP PNEUS - MT",
+    "tabela": "GP PNEUS MT",
+    "count": 7
+  },
+  {
     "id": 21,
     "descricao": "GP PNEUS - SE",
     "tabela": "GP PNEUS - SE",
-    "count": 7
+    "count": 6
   },
   {
     "id": 19,
@@ -129,12 +129,6 @@
     "id": 17,
     "descricao": "GP PNEUS - RO",
     "tabela": "GP PNEUS - RO",
-    "count": 5
-  },
-  {
-    "id": 29,
-    "descricao": "TABELA 05 - NACIONAL + 60%",
-    "tabela": "Servicos 20%+ALBL 60%+Pecas 10%",
     "count": 5
   },
   {
@@ -168,12 +162,6 @@
     "count": 3
   },
   {
-    "id": 16,
-    "descricao": "GP PNEUS - PA",
-    "tabela": "GP PNEUS - PA",
-    "count": 3
-  },
-  {
     "id": 23,
     "descricao": "GP PNEUS - BA",
     "tabela": "GP PNEUS - BA",
@@ -183,6 +171,12 @@
     "id": 24,
     "descricao": "GP PNEUS - ES",
     "tabela": "GP PNEUS - ES",
+    "count": 3
+  },
+  {
+    "id": 16,
+    "descricao": "GP PNEUS - PA",
+    "tabela": "GP PNEUS - PA",
     "count": 3
   },
   {
@@ -198,9 +192,15 @@
     "count": 2
   },
   {
-    "id": 34,
-    "descricao": "GP PNEUS - RN",
-    "tabela": "GP PNEUS - RN",
+    "id": 26,
+    "descricao": "Campneus - 01",
+    "tabela": "Rj",
+    "count": 1
+  },
+  {
+    "id": 29,
+    "descricao": "TABELA 05 - NACIONAL + 60%",
+    "tabela": "Servicos 20%+ALBL 60%+Pecas 10%",
     "count": 1
   },
   {
@@ -216,15 +216,15 @@
     "count": 1
   },
   {
-    "id": 25,
-    "descricao": "GP PNEUS - AL",
-    "tabela": "GP PNEUS - AL",
+    "id": 34,
+    "descricao": "GP PNEUS - RN",
+    "tabela": "GP PNEUS - RN",
     "count": 1
   },
   {
-    "id": 26,
-    "descricao": "Campneus - 01",
-    "tabela": "Rj",
+    "id": 25,
+    "descricao": "GP PNEUS - AL",
+    "tabela": "GP PNEUS - AL",
     "count": 1
   }
 ]
