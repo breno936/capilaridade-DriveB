@@ -292,7 +292,13 @@ function MiniPagination({ currentPage, totalPages, onPrevious, onNext }) {
   );
 }
 
-export default function DashboardClient({ initialCityCache = [], initialWorkshopCategories = [] }) {
+export default function DashboardClient({
+  initialCityCache = [],
+  initialWorkshopCategories = [],
+  initialHeavyFleet = [],
+  initialConcessionariaBrands = [],
+  initialNetworkConsultants = [],
+}) {
   const [workshops, setWorkshops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -329,7 +335,7 @@ export default function DashboardClient({ initialCityCache = [], initialWorkshop
         if (!response.ok) throw new Error(`Falha ao carregar dataset (${response.status})`);
         const payload = await response.json();
         if (!cancelled) {
-          setWorkshops(enrichWorkshops(payload, initialCityCache, initialWorkshopCategories));
+          setWorkshops(enrichWorkshops(payload, initialCityCache, initialWorkshopCategories, initialHeavyFleet, initialConcessionariaBrands, initialNetworkConsultants));
           setError('');
         }
       } catch (loadError) {
@@ -343,7 +349,7 @@ export default function DashboardClient({ initialCityCache = [], initialWorkshop
     return () => {
       cancelled = true;
     };
-  }, [initialCityCache, initialWorkshopCategories]);
+  }, [initialCityCache, initialWorkshopCategories, initialHeavyFleet, initialConcessionariaBrands, initialNetworkConsultants]);
 
   const filteredWorkshops = useMemo(() => filterWorkshops(workshops, filters), [filters, workshops]);
 

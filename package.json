@@ -9,6 +9,8 @@
     "enrich:cities": "node scripts/enrich-cities.mjs",
     "import:categories": "node scripts/import-workshop-categories.mjs",
     "import:heavy-fleet": "node scripts/import-heavy-fleet.mjs",
+    "import:concessionaria-brands": "node scripts/import-concessionaria-brands.mjs",
+    "import:network-consultants": "node scripts/import-network-consultants.mjs",
     "migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {

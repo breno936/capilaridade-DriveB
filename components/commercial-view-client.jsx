@@ -23,6 +23,9 @@ import {
 import { brandIconUrl } from '../lib/workshop-brands';
 import initialCityCache from '../data/city-cache.json';
 import initialWorkshopCategories from '../data/workshop-categories.json';
+import initialHeavyFleet from '../data/workshop-heavy-fleet.json';
+import initialConcessionariaBrands from '../data/workshop-concessionaria-brands.json';
+import initialNetworkConsultants from '../data/workshop-network-consultants.json';
 
 const MapView = dynamic(() => import('./map-view'), {
   ssr: false,
@@ -210,7 +213,7 @@ export default function CommercialViewClient() {
         if (!response.ok) throw new Error(`Falha ao carregar dataset (${response.status})`);
         const payload = await response.json();
         if (!cancelled) {
-          setWorkshops(enrichWorkshops(payload, initialCityCache, initialWorkshopCategories));
+          setWorkshops(enrichWorkshops(payload, initialCityCache, initialWorkshopCategories, initialHeavyFleet, initialConcessionariaBrands, initialNetworkConsultants));
           setError('');
         }
       } catch (loadError) {

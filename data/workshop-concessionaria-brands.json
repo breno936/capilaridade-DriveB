@@ -1,0 +1,2442 @@
+[
+  {
+    "id": 545,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "EUROPAMOTORS CONCESSIONARIA JEEP",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 943,
+    "brandSlug": "lexus",
+    "brandLabel": "Lexus",
+    "nomeFantasia": "LEXUS JARDINS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1062,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CARRERA CHEVROLET | ALPHAVILLE",
+    "cidade": "Barueri",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1214,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPPOKAR TOYOTA JD CHAPADÃO",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1215,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPPOKAR TOYOTA  MOGI MIRIM",
+    "cidade": "Mogi Mirim",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1216,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPPOKAR TOYOTA - PIRACICABA",
+    "cidade": "Piracicaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1217,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPPOKAR TOYOTA  BARAO DE ITAPURA",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1232,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "RUMO NORTE CONGONHAS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1244,
+    "brandSlug": "ford",
+    "brandLabel": "Ford",
+    "nomeFantasia": "BALTICO ARARAQUARA",
+    "cidade": "Araraquara",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1398,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET PAULINIA",
+    "cidade": "Paulínia",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1399,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1400,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET AMPARO",
+    "cidade": "Amparo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1402,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET ITU",
+    "cidade": "Itu",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1403,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET LIMEIRA",
+    "cidade": "Limeira",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1404,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET INDAIATUBA - CNPJ INATIVO",
+    "cidade": "Indaiatuba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1442,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "CARRERA ACELERA VOLKSWAGEN | ALPHAVILLE",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1443,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "CARRERA ACELERA VOLKSWAGEN |  VILA LOBOS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1444,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "CARRERA ACELERA VOLKSWAGEN | OSASCO",
+    "cidade": "Osasco",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1588,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "LINE UP CONCESIONARIO TOYOTA TUCUMAN",
+    "cidade": "Municipalidad de San Miguel De Tucuman",
+    "estado": "Tucumán"
+  },
+  {
+    "id": 1626,
+    "brandSlug": "citroen",
+    "brandLabel": "Citroen",
+    "nomeFantasia": "ALLMA CITROEN",
+    "cidade": "Ribeirão Preto",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1627,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "GERMANICA VW  VOLKSWAGEN",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1639,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "SANTA EMÍLIA VOLKSWAGEN",
+    "cidade": "Ribeirão Preto",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1657,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN DAHRUJ LIMEIRA",
+    "cidade": "Limeira",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1658,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN DAHRUJ  PIRACICABA",
+    "cidade": "Piracicaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1659,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN DAHRUJ AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1660,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN DAHRUJ INDAIATUBA",
+    "cidade": "Indaiatuba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1666,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "AUTOMEC CHEVROLET SOROCABA - MATRIZ",
+    "cidade": "Sorocaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1675,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "NOVA TRES CHEVROLET",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1691,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VIAMAR CHEVROLET ANHAIA MELLO",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1693,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VIAMAR PEREIRA BARRETO",
+    "cidade": "São Bernardo do Campo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1695,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN DAHRUJ CAMPINAS NORTE SUL",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1702,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "DAHRUJ CHEVROLET CAMPINAS OROZIMBO",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1713,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI PATEO SAO LUIZ HOLANDESES",
+    "cidade": "São Luís",
+    "estado": "Maranhão"
+  },
+  {
+    "id": 1720,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB PATEO - FEIRA DE SANTANA",
+    "cidade": "Feira de Santana",
+    "estado": "Bahia"
+  },
+  {
+    "id": 1725,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "FELIVEL BAURU",
+    "cidade": "Bauru",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1726,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "MAXHB HYUNDAI IPIRANGA TANCREDO",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1727,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "MAXHB HYUNDAI MORUMBI",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1728,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "MAXHB HYUNDAI INTERLAGOS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1729,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "MAXHB HYUNDAI OSASCO",
+    "cidade": "Osasco",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1730,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB PATEO - SALVADOR ARRAIAL DO RETIRO",
+    "cidade": "Salvador",
+    "estado": "Bahia"
+  },
+  {
+    "id": 1734,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB ANDRETA CAMPINAS",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1739,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB ANDRETA JUNDIAI",
+    "cidade": "Jundiaí",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1740,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "MAXHB HYUNDAI BROOKLIN",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1741,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ GUARULHOS",
+    "cidade": "Guarulhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1742,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI BARIGUI - GUARAPUAVA-PR",
+    "cidade": "Guarapuava",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1745,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB ANDRETA VALINHOS",
+    "cidade": "Valinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1746,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB MASTER - BARREIRAS",
+    "cidade": "Barreiras",
+    "estado": "Bahia"
+  },
+  {
+    "id": 1747,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB SANTA FE II - PATO BRANCO-PR",
+    "cidade": "Pato Branco",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1748,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "VENTUNO FIAT ARICANDUVA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1749,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI PATEO JOAO PESSOA",
+    "cidade": "João Pessoa",
+    "estado": "Paraíba"
+  },
+  {
+    "id": 1754,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB ANDRETA INDAIATUBA",
+    "cidade": "Indaiatuba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1755,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB ANDRETA AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1756,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB ANDRETA RIO CLARO",
+    "cidade": "Rio Claro",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1758,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW BARIGUI - CASCAVEL-PR",
+    "cidade": "Cascavel",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1759,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB BARIGUI -  ITAJAI-SC",
+    "cidade": "Itajaí",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1760,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW BARIGUI - CURITIBA CABRAL",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1761,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB BARIGUI -  JOINVILLE",
+    "cidade": "Joinville",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1762,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "LOVAT VEICULOS MARINGA",
+    "cidade": "Maringá",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1763,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB BARIGUI -  PONTA GROSSA",
+    "cidade": "Ponta Grossa",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1764,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW BARIGUI - SAO JOSE-SC",
+    "cidade": "São José",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1766,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB GERACAO - SAO JOSE-SC",
+    "cidade": "São José",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1767,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - ARACATUBA",
+    "cidade": "Araçatuba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1768,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW BARIGUI - TELEMACO BORBA",
+    "cidade": "Telêmaco Borba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1769,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB BARI - BAL. CAMBORIU",
+    "cidade": "Balneário Camboriú",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1771,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ ARICANDUVA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1772,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "GRANDAY HYUNDAI HB MOOCA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1773,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA -  SANTOS-SP",
+    "cidade": "Santos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1775,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB SANTA FE - FRANCISCO BELTRAO-PR",
+    "cidade": "Francisco Beltrão",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1776,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - PRES. PRUDENTE",
+    "cidade": "Presidente Prudente",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1777,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW BARIGUI BLUSA - BLUMENAU-SC",
+    "cidade": "Blumenau",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1778,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB LOVAT - LONDRINA-PR",
+    "cidade": "Londrina",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1779,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB BARIGUI - BLUMENAU-SC",
+    "cidade": "Blumenau",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1783,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB PATEO - MANAUS",
+    "cidade": "Manaus",
+    "estado": "Amazonas"
+  },
+  {
+    "id": 1784,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB PATEO RECIFE",
+    "cidade": "Recife",
+    "estado": "Pernambuco"
+  },
+  {
+    "id": 1785,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW VOX VEICULOS JOINVILLE",
+    "cidade": "Joinville",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1786,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - ANHAIA MELO",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1787,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB DESTAQUE - CARAGUATATUBA",
+    "cidade": "Caraguatatuba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1790,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB HYMAX - MOGI GUACU",
+    "cidade": "Mogi Guaçu",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1791,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB GERACAO - RIO DO SUL-SC",
+    "cidade": "Rio do Sul",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1792,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB DESTAQUE | ATIBAIA",
+    "cidade": "Atibaia",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1793,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB DESTAQUE  - BRAGANCA PAULISTA",
+    "cidade": "Bragança Paulista",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1795,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ VILA GUILHERME",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1797,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - SANTO ANDRE",
+    "cidade": "Santo André",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1799,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "METROSUL CHEVROLET CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1800,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ AV SUMARE",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1802,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "GRANDAY VILA CARRAO",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1803,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB GERACAO - BRUSQUE-SC",
+    "cidade": "Brusque",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1806,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB AUTOVILLE - BELO HORIZONTE",
+    "cidade": "Belo Horizonte",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1808,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "COMETA HMB HYUNDAI - TANGARA DA SERRA",
+    "cidade": "Tangará da Serra",
+    "estado": "Mato Grosso"
+  },
+  {
+    "id": 1809,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CYCOSA - MACEIO",
+    "cidade": "Maceió",
+    "estado": "Alagoas"
+  },
+  {
+    "id": 1811,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB GERACAO - LAGES-SC",
+    "cidade": "Lages",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1812,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "GNC GRANDE COREIA",
+    "cidade": "Montes Claros",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1813,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI CAOA HMB - S.B.C.",
+    "cidade": "São Bernardo do Campo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1814,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI CAOA HMB -  PRAIA GRANDE-SP",
+    "cidade": "Praia Grande",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1816,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "MONTREAL CABO FRIO",
+    "cidade": "São Pedro da Aldeia",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1817,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TAI MOTORS - MURIAE",
+    "cidade": "Muriaé",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1819,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TOP MOTORS - BOTUCATU-SP",
+    "cidade": "Botucatu",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1820,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TOP MOTORS - OURINHOS-SP",
+    "cidade": "Ourinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1822,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "CARWAY SUL VEICULOS NOVO HAMBURGO",
+    "cidade": "Novo Hamburgo",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 1823,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "SERVOPA CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1824,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA -  IPIRANGA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1825,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB VIA IMPERIAL - PETROPOLIS",
+    "cidade": "Petrópolis",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1826,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB GALA - BAGE",
+    "cidade": "Bagé",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 1827,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB OPEN - CASCAVEL",
+    "cidade": "Cascavel",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1828,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB VITAL -  IPATINGA",
+    "cidade": "Ipatinga",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1829,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - SANTANA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1831,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB ATUAL - CRICIUMA",
+    "cidade": "Criciúma",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1832,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB OPEN  - UMUARAMA",
+    "cidade": "Umuarama",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1833,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA -  BARRA II",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1834,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "VIA NORTE SOBRAL",
+    "cidade": "Sobral",
+    "estado": "Ceará"
+  },
+  {
+    "id": 1836,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB OPEN  - FOZ DO IGUACU",
+    "cidade": "Foz do Iguaçu",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1837,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB ATUAL - TUBARAO",
+    "cidade": "Tubarão",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1838,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - TAUBATE",
+    "cidade": "Taubaté",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1839,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA - SAO JOSE DOS CAMPOS",
+    "cidade": "São José dos Campos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1841,
+    "brandSlug": "bmw",
+    "brandLabel": "BMW",
+    "nomeFantasia": "EURO IMPORT BMW CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1843,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TOP MOTORS - BAURU-SP",
+    "cidade": "Bauru",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1844,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB IMOTORS - JUIZ DE FORA",
+    "cidade": "Juiz de Fora",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1845,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "VITAL HYUNDAI GOVERNADOR VALADARES",
+    "cidade": "Governador Valadares",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1847,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "COMETA HMB HYUNDAI - SINOP",
+    "cidade": "Sinop",
+    "estado": "Mato Grosso"
+  },
+  {
+    "id": 1848,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB NOBRE - SUZANO",
+    "cidade": "Suzano",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1851,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT AMAZONAS IPIRANGA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1852,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI  HMB VNZ PARANAMIRIM",
+    "cidade": "Parnamirim",
+    "estado": "Rio Grande do Norte"
+  },
+  {
+    "id": 1853,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB ABRAO REZE SOROCABA",
+    "cidade": "Sorocaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1854,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB AUTOVILLE CONTAGEM",
+    "cidade": "Contagem",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1855,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CAOA ERMANO MARCHETTI",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1856,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB MONTREAL MACAE",
+    "cidade": "Macaé",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1857,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB PATEO OLINDA",
+    "cidade": "Olinda",
+    "estado": "Pernambuco"
+  },
+  {
+    "id": 1858,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TOKSU VARGINHA",
+    "cidade": "Varginha",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1859,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TOP MOTORS JAU",
+    "cidade": "Jaú",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1860,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI SAGA PORTO VELHO",
+    "cidade": "Porto Velho",
+    "estado": "Rondônia"
+  },
+  {
+    "id": 1861,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI TOKSU POUSO ALEGRE",
+    "cidade": "Pouso Alegre",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1862,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "PRIVILLEGE HYUNDAI MARABA",
+    "cidade": "Marabá",
+    "estado": "Pará"
+  },
+  {
+    "id": 1868,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB CORDIAL CACADOR",
+    "cidade": "Caçador",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1869,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB NAGOYA UBA",
+    "cidade": "Ubá",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1870,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB NISSUL GALA",
+    "cidade": "Pelotas",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 1871,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TAI MOTORS CAMPOS DOS GOYTACAZES",
+    "cidade": "Campos dos Goytacazes",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1872,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TOKSU JUIZ DE FORA",
+    "cidade": "Juiz de Fora",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1873,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TRIAUTO CATALAO",
+    "cidade": "Catalão",
+    "estado": "Goiás"
+  },
+  {
+    "id": 1874,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB URCA UBERABA",
+    "cidade": "Uberaba",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1875,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB URCA UBERLANDIA",
+    "cidade": "Uberlândia",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 1876,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "MAGGI VOLKSWAGEN ITU",
+    "cidade": "Itu",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1877,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "MAGGI VOLKSWAGEN TIETE",
+    "cidade": "Tietê",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1879,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "SERVOPA VOLKSWAGEM MARINGA",
+    "cidade": "Maringá",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1880,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "SERVOPA VOLKSWAGEM PARANAGUA",
+    "cidade": "Paranaguá",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1881,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "ULSAN HYUNDAI HMB JOAO ARINOS",
+    "cidade": "Campo Grande",
+    "estado": "Mato Grosso do Sul"
+  },
+  {
+    "id": 1882,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "ULSAN HYUNDAI HMB RIO BRANCO",
+    "cidade": "Rio Branco",
+    "estado": "Acre"
+  },
+  {
+    "id": 1886,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "CORDIAL HYUNDAI | CONCORDIA MATRIZ",
+    "cidade": "Concórdia",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1887,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "GERMANICA VW LIMEIRA",
+    "cidade": "Limeira",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1888,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "NEW BARRETOS",
+    "cidade": "Barretos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1889,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "RODOBENS SAO JOSE DO RIO PRETO",
+    "cidade": "São José do Rio Preto",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1891,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "ZENDAI TOLEDO",
+    "cidade": "Toledo",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1893,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "MAGGI VEICULOS FIAT TIETE",
+    "cidade": "Tietê",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1895,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SINAL SAO BERNARDO DO CAMPO",
+    "cidade": "São Bernardo do Campo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1896,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP SINAL TANCREDO NEVES",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1897,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP SINAL ALPHAVILLE",
+    "cidade": "Barueri",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1898,
+    "brandSlug": "ford",
+    "brandLabel": "Ford",
+    "nomeFantasia": "SINAL FORD MIX SAO CAETANO DO SUL",
+    "cidade": "São Caetano do Sul",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1899,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "RENAULT SINAL FRANCE ALPHAVILLE",
+    "cidade": "Barueri",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1903,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI CAOA INDIANOPOLIS OFICINA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1904,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB LEAUTO",
+    "cidade": "Nova Iguaçu",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1906,
+    "brandSlug": "kia",
+    "brandLabel": "Kia",
+    "nomeFantasia": "KIA SINAL NACOES UNIDAS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1913,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "LEXUS | TOYOTA BARIGUI CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1914,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "SIMCAUTO CHEVROLET DEL CASTILHO",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1915,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "SIMCAUTO CHEVROLET CASCADURA",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1917,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SINAL JOAO DIAS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1918,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP SINAL SAO BERNARDO DO CAMPO",
+    "cidade": "São Bernardo do Campo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1919,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "HONDA MIX ABC",
+    "cidade": "São Caetano do Sul",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1920,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB GAMBATTO CHAPECO",
+    "cidade": "Chapecó",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 1921,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": " SEVEC CURITIBA II",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1924,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "ULSAN HYUNDAI HMB CALOGERAS",
+    "cidade": "Campo Grande",
+    "estado": "Mato Grosso do Sul"
+  },
+  {
+    "id": 1931,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "SIMCAUTO CHEVROLET NOVA IGUAÇU",
+    "cidade": "Nova Iguaçu",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1953,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "SERVOPA CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 1958,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB SINAL NORTE",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1959,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB SINAL BARUERI",
+    "cidade": "Barueri",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1961,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "FIAT CORDIAL ERECHIM",
+    "cidade": "Erechim",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 1962,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB AMX PIRATININGA",
+    "cidade": "Niterói",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 1963,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB SINAL SAO CAETANO",
+    "cidade": "São Caetano do Sul",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1964,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB SINAL DIADEMA",
+    "cidade": "Diadema",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1974,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB JPN ARAPIRACA",
+    "cidade": "Arapiraca",
+    "estado": "Alagoas"
+  },
+  {
+    "id": 1975,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "GERMANICA VW CAMPINAS BARAO GERALDO",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1976,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ CAMPINAS CAMBUI",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1977,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT FORTE BONFIM",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1978,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "AIKON HYUNDAI ITABUNA",
+    "cidade": "Itabuna",
+    "estado": "Bahia"
+  },
+  {
+    "id": 1979,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "TERRA SANTA JUAZEIRO DO NORTE",
+    "cidade": "Juazeiro do Norte",
+    "estado": "Ceará"
+  },
+  {
+    "id": 1981,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT DARUHJ CAMPINAS CAMBUI",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1982,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ CASTELO",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1990,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ CEASA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1992,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "MAGGI VW ITU",
+    "cidade": "Itu",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1997,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "TOYOTA INTER JAPAN BUTANTA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 1998,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "NEW ARARAQUARA",
+    "cidade": "Araraquara",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2000,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "RENAULT ITAVEMA FRANCE VILA LEOPOLDINA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2001,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "TOYOTA INTER JAPAN BOTAFOGO",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2002,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CIVESA CHEVROLET RIO CLARO",
+    "cidade": "Rio Claro",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2004,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "ITAVEMA FIAT NOVA IGUACU RJ",
+    "cidade": "Nova Iguaçu",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2013,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "CARWAY PORTO ALEGRE AZENHA",
+    "cidade": "Porto Alegre",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 2014,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "NEW SERTAOZINHO",
+    "cidade": "Sertãozinho",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2019,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB ITAVEMA RJ CAMPO GRANDE",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2032,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "NEW CASTELO",
+    "cidade": "Ribeirão Preto",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2033,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HYUNDAI HMB TECAR DIVINOPOLIS",
+    "cidade": "Divinópolis",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 2034,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT BARIGUI CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 2035,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "AB ABOLICAO VOLKSWAGEN",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2045,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VEIBRAS CHEVROLET SJC",
+    "cidade": "São José dos Campos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2046,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VEIBRAS CHEVROLET CARAGUA",
+    "cidade": "Caraguatatuba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2064,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "ABSOLUTA VEICULOS CHEVROLET SANTOS",
+    "cidade": "Santos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2065,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "ABSOLUTA VEICULOS CHEVROLET PRAIA GRANDE",
+    "cidade": "Praia Grande",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2066,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "RENAULT ESTORIL SANTOS",
+    "cidade": "Santos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2073,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "H POINT HONDA PINHEIROS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2074,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB CAMINHO CATANDUVA",
+    "cidade": "Catanduva",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2075,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB CAMINHO LIMEIRA",
+    "cidade": "Limeira",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2078,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "TOYOTA INTER JAPAN  VILA LEOPOLDINA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2079,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "HMB CAMINHO PIRACICABA",
+    "cidade": "Piracicaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2083,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ INTERLAGOS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2116,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "H POINT HONDA ITAIM BIBI",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2117,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "H POINT HONDA MORUMBI",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2167,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DAHRUJ JUNDIAÍ",
+    "cidade": "Jundiaí",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2170,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CARERRA CHEVROLET BARRA FUNDA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2171,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CARRERA CHEVROLET EDGAR FACO",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2179,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CARRERA CHEVROLET LAPA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2184,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CARRERA CHEVROLET VILA LOBOS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2191,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SIM AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2192,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "RENAULT SIM VINHEDO",
+    "cidade": "Vinhedo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2193,
+    "brandSlug": "citroen",
+    "brandLabel": "Citroen / Peugeot",
+    "nomeFantasia": "PEUGEOT | CITROEN SIM VALINHOS",
+    "cidade": "Valinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2194,
+    "brandSlug": "citroen",
+    "brandLabel": "Citroen / Peugeot",
+    "nomeFantasia": "PEUGEOT | CITROEN SIM AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2201,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SIM SUMARÉ",
+    "cidade": "Sumaré",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2202,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "JAVEP",
+    "cidade": "Ribeirão Preto",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2204,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP SIM AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2233,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "OFICINA INTERMEDIAÇÃO DAHRUJ",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2239,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "OFICINA JEEP",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2267,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO SÃO BERNARDO DO CAMPO",
+    "cidade": "São Bernardo do Campo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2268,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO SÃO CAETANO DO SUL",
+    "cidade": "São Caetano do Sul",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2269,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO VILA MARIANA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2270,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO IPIRANGA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2271,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO VILA GUILHERME",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2272,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO NAÇÕES UNIDAS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2273,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN TOKIO SANTO ANDRÉ",
+    "cidade": "Santo André",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2282,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "CALLIS VEICULOS",
+    "cidade": "Bragança Paulista",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2283,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "PEDRAGON RECIFE - GRAÇAS",
+    "cidade": "Recife",
+    "estado": "Pernambuco"
+  },
+  {
+    "id": 2289,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SIM VALINHOS",
+    "cidade": "Valinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2291,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "BEXP JEEP | BUTANTÃ",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2292,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "BEXP JEEP | MORUMBI",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2294,
+    "brandSlug": "concessionaria",
+    "brandLabel": "Concessionaria",
+    "nomeFantasia": "GRUPO ITAVEMA -  VISÃO MATRIZ",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2299,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "SAN DIEGO BARRA",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2300,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "SAN DIEGO QUINTINO",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2301,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "SAN DIEGO RECREIO",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2302,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "SAN DIEGO SÃO CONRADO",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2306,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP SIM VALINHOS",
+    "cidade": "Valinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2342,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "RENAULT ANDRETA PIRACICABA",
+    "cidade": "Piracicaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2358,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "TOYOTA STÉFANI SÃO CARLOS",
+    "cidade": "São Carlos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2359,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VIGO MOTORS VOLKSWAGEN SÃO BERNARDO DO CAMPO",
+    "cidade": "São Bernardo do Campo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2360,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VIGORITO CHEVROLET GUARULHOS",
+    "cidade": "Guarulhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2361,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VIGO MOTORS VOLKSWAGEN VILA MARIANA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2363,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "TOYOTA STÉFANI JABOTICABAL",
+    "cidade": "Jaboticabal",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2364,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "TOYOTA STÉFANI ARARAQUARA",
+    "cidade": "Araraquara",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2375,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP VIA MOTORS MONTES CLAROS",
+    "cidade": "Montes Claros",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 2376,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP AZZURRA TIJUCA",
+    "cidade": "Rio de Janeiro",
+    "estado": "Rio de Janeiro"
+  },
+  {
+    "id": 2377,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP VITORIA MOTORS VITÓRIA",
+    "cidade": "Vitória",
+    "estado": "Espírito Santo"
+  },
+  {
+    "id": 2378,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP DESTAQUE SANTO ANDRÉ",
+    "cidade": "Santo André",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2379,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP STEFANINI LIMEIRA",
+    "cidade": "Limeira",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2380,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SINAL ALPHAVILLE",
+    "cidade": "Barueri",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2381,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP TOTAL ATIBAIA",
+    "cidade": "Atibaia",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2398,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "NISSAN CARRERA MORUMBI",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2403,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VIGORITO CHEVROLET SANTO ANDRÉ",
+    "cidade": "Santo André",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2404,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VIGORITO CHEVROLET ARICANDUVA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2417,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "KIN NISSAN GUARULHOS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2418,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "KIN NISSAN ANHAIA MELLO",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2419,
+    "brandSlug": "nissan",
+    "brandLabel": "Nissan",
+    "nomeFantasia": "KIN NISSAN PENHA",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 2543,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "GERMÂNICA JEEP POÇOS DE CALDAS",
+    "cidade": "Poços de Caldas",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 2544,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "SPONCHIADO JARDINE (ERECHIM)",
+    "cidade": "Erechim",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 2567,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP VIA MOTORS - VALPARAISO DE GOIAS",
+    "cidade": "Valparaíso de Goiás",
+    "estado": "Goiás"
+  },
+  {
+    "id": 2809,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT ANDRETA - JUNDIAÍ/SP",
+    "cidade": "Jundiaí",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 4292,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP SIM CAMPINAS",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 4293,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "FIAT SIM CAMPINAS",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 4295,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CHEVROLET ADARA TREVO",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 4299,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "CHEVROLET SPASSUS JUNDIAÍ",
+    "cidade": "Jundiaí",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 4314,
+    "brandSlug": "volvo",
+    "brandLabel": "Volvo",
+    "nomeFantasia": "INTERCAR VOCAL VOLVO",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 4318,
+    "brandSlug": "bmw",
+    "brandLabel": "BMW",
+    "nomeFantasia": "AUTOSTAR BMW NAÇÕES UNIDAS",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 6888,
+    "brandSlug": "jeep",
+    "brandLabel": "Jeep",
+    "nomeFantasia": "JEEP BARIGUI PORTÃO",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 6900,
+    "brandSlug": "audi",
+    "brandLabel": "Audi",
+    "nomeFantasia": "AUDI BEXP ALPHAVILLE",
+    "cidade": "Barueri",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 6927,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "GERMANICA VW JUNDIAÍ",
+    "cidade": "Jundiaí",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 6932,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "VIGORITO CHEVROLET - MAUA",
+    "cidade": "Mauá",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7021,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "GERMÂNICA VOLKSWAGEN VALINHOS",
+    "cidade": "Valinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7022,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "RENAULT NISSUL GALA CACHOEIRINHA",
+    "cidade": "Cachoeirinha",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 7034,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "HONDA DAHRUJ CAMPINAS",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7036,
+    "brandSlug": "chery",
+    "brandLabel": "Chery",
+    "nomeFantasia": "CAOA CHERY -  CAMBUI",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7081,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "HONDA CAIUÁS AUTOMÓVEIS SOROCABA",
+    "cidade": "Sorocaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7085,
+    "brandSlug": "chery",
+    "brandLabel": "Chery",
+    "nomeFantasia": "CAOA CHERY - GUANABARA",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7097,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPONICA TOYOTA - SAO JOAO DA BOA VISTA",
+    "cidade": "São João da Boa Vista",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7098,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPONICA TOYOTA - RIO CLARO",
+    "cidade": "Rio Claro",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7099,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPONICA TOYOTA - POCOS DE CALDAS",
+    "cidade": "Poços de Caldas",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 7101,
+    "brandSlug": "toyota",
+    "brandLabel": "Toyota",
+    "nomeFantasia": "NIPONICA TOYOTA - PASSOS",
+    "cidade": "Passos",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 7124,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "HONDA AVERSA -  AMERICANA",
+    "cidade": "Americana",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7151,
+    "brandSlug": "bmw",
+    "brandLabel": "BMW",
+    "nomeFantasia": "BMW GERMÂNICA - PIRACICABA",
+    "cidade": "Piracicaba",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7161,
+    "brandSlug": "ford",
+    "brandLabel": "Ford",
+    "nomeFantasia": "FORD CAOA CAMPINAS",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7165,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "GERMANICA VW VALINHOS",
+    "cidade": "Valinhos",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7172,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "DAHRUJ HONDA FORTE VILA GUILHERME",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 7180,
+    "brandSlug": "chevrolet",
+    "brandLabel": "Chevrolet",
+    "nomeFantasia": "NOVA VEICULOS CHEVROLET",
+    "cidade": "São Paulo",
+    "estado": "São Paulo"
+  },
+  {
+    "id": 10421,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "CARWAY SUL CANOAS",
+    "cidade": "Canoas",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 10423,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "DIJON CANOAS",
+    "cidade": "Canoas",
+    "estado": "Rio Grande do Sul"
+  },
+  {
+    "id": 10428,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "CARBEL KOREA VEICULOS LTDA",
+    "cidade": "Belo Horizonte",
+    "estado": "Minas Gerais"
+  },
+  {
+    "id": 10429,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "PRIXX VEICULOS CURITIBA",
+    "cidade": "Curitiba",
+    "estado": "Paraná"
+  },
+  {
+    "id": 10431,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "PRIXX VEICULOS MARINGA",
+    "cidade": "Maringá",
+    "estado": "Paraná"
+  },
+  {
+    "id": 10433,
+    "brandSlug": "honda",
+    "brandLabel": "Honda",
+    "nomeFantasia": "PRIXX VEICULOS LONDRINA",
+    "cidade": "Londrina",
+    "estado": "Paraná"
+  },
+  {
+    "id": 10435,
+    "brandSlug": "fiat",
+    "brandLabel": "Fiat",
+    "nomeFantasia": "CARBONI VIDEIRAS",
+    "cidade": "Videira",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 13673,
+    "brandSlug": "hyundai",
+    "brandLabel": "Hyundai",
+    "nomeFantasia": "VETOR AUTOMOVEIS LTDA CAMPO MOURÃO",
+    "cidade": "Campo Mourão",
+    "estado": "Paraná"
+  },
+  {
+    "id": 13674,
+    "brandSlug": "renault",
+    "brandLabel": "Renault",
+    "nomeFantasia": "GLOBO VEICULOS",
+    "cidade": "Palhoça",
+    "estado": "Santa Catarina"
+  },
+  {
+    "id": 13679,
+    "brandSlug": "volkswagen",
+    "brandLabel": "Volkswagen",
+    "nomeFantasia": "VW GERMÂNICA CAMPINAS",
+    "cidade": "Campinas",
+    "estado": "São Paulo"
+  }
+]

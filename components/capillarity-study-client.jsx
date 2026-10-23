@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { coverageTypeLabel, defaultFilters, enrichWorkshops, filterWorkshops, formatNumber } from '../lib/workshop-utils';
+import { coverageTypeLabel, coverageTypeOptions, defaultFilters, enrichWorkshops, filterWorkshops, formatNumber } from '../lib/workshop-utils';
 import {
   buildCityKey,
   buildCityLookup,
   buildCoverageIndex,
+  createConcessionariaIndexResolver,
   generateCapillarityStudy,
   haversineKm,
-  isHeavyFleetRow,
+  selectCoverageIndexForRow,
 } from '../lib/capillarity-study';
 import {
   analyzeHeaderRow,
@@ -22,6 +23,8 @@ import {
 import initialCityCache from '../data/city-cache.json';
 import initialWorkshopCategories from '../data/workshop-categories.json';
 import initialHeavyFleet from '../data/workshop-heavy-fleet.json';
+import initialConcessionariaBrands from '../data/workshop-concessionaria-brands.json';
+import initialNetworkConsultants from '../data/workshop-network-consultants.json';
 
 const statusFilterOptions = [
   { value: 'all', label: 'Todas' },
@@ -48,6 +51,7 @@ const emptyMapping = {
   client: undefined,
   vehicleCount: undefined,
   fleetType: undefined,
+  vehicleBrand: undefined,
 };
 
 function StatusCard({ title, description }) {
@@ -99,6 +103,8 @@ function BrandBadges({ brandCounts }) {
 function selectWorkshopsForSettings(driveBWorkshops, settings) {
   const selectedTableIds = settings?.selectedTableIds?.length ? settings.selectedTableIds : ['all'];
   const modelFilter = settings?.modelFilter || 'all';
+  const serviceTypeFilter = settings?.serviceTypeFilter || 'all';
+  const brandFilter = settings?.brandFilter || 'all';
 
   let filtered = driveBWorkshops;
   if (!selectedTableIds.includes('all')) {
@@ -107,6 +113,8 @@ function selectWorkshopsForSettings(driveBWorkshops, settings) {
   }
   if (modelFilter === 'fee') filtered = filtered.filter((item) => item.isFee);
   else if (modelFilter === 'margin') filtered = filtered.filter((item) => item.isMargin);
+  if (serviceTypeFilter !== 'all') filtered = filtered.filter((item) => item.serviceType === serviceTypeFilter);
+  if (brandFilter !== 'all') filtered = filtered.filter((item) => (item.brandSlug || 'independente') === brandFilter);
   return filtered;
 }
 
@@ -171,6 +179,8 @@ export default function CapillarityStudyClient({ clientId } = {}) {
   const [selectedTableIds, setSelectedTableIds] = useState(['all']);
   const [autoIncludeNote, setAutoIncludeNote] = useState('');
   const [modelFilter, setModelFilter] = useState('all');
+  const [serviceTypeFilter, setServiceTypeFilter] = useState('all');
+  const [brandFilter, setBrandFilter] = useState('all');
   const [studyTableLabel, setStudyTableLabel] = useState('Toda a rede DriveB');
 
   useEffect(() => {
@@ -190,7 +200,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
         const citiesPayload = await citiesResponse.json();
 
         if (!cancelled) {
-          setWorkshops(enrichWorkshops(workshopsPayload, initialCityCache, initialWorkshopCategories, initialHeavyFleet));
+          setWorkshops(enrichWorkshops(workshopsPayload, initialCityCache, initialWorkshopCategories, initialHeavyFleet, initialConcessionariaBrands, initialNetworkConsultants));
           setBrCities(citiesPayload);
           setError('');
         }
@@ -439,10 +449,34 @@ export default function CapillarityStudyClient({ clientId } = {}) {
     return workshopsForTable;
   }, [workshopsForTable, modelFilter]);
 
+  // Opcoes de marca calculadas sobre toda a rede DriveB (nao sobre o recorte atual) para a
+  // lista de escolhas e as contagens ficarem estaveis enquanto a pessoa alterna outros filtros.
+  const brandOptions = useMemo(() => {
+    const counts = new Map();
+    driveBWorkshops.forEach((item) => {
+      const slug = item.brandSlug || 'independente';
+      const label = item.brandSlug ? item.brandLabel : 'Independente';
+      const current = counts.get(slug) || { slug, label, count: 0 };
+      current.count += 1;
+      counts.set(slug, current);
+    });
+    return [...counts.values()].sort((left, right) => right.count - left.count);
+  }, [driveBWorkshops]);
+
+  const workshopsForStudy = useMemo(() => {
+    let filtered = workshopsForModel;
+    if (serviceTypeFilter !== 'all') filtered = filtered.filter((item) => item.serviceType === serviceTypeFilter);
+    if (brandFilter !== 'all') filtered = filtered.filter((item) => (item.brandSlug || 'independente') === brandFilter);
+    return filtered;
+  }, [workshopsForModel, serviceTypeFilter, brandFilter]);
+
   function buildStudyTableLabel() {
     const modelSuffix = modelFilter === 'fee' ? ' · Somente Fee' : modelFilter === 'margin' ? ' · Somente Margem' : '';
+    const typeSuffix = serviceTypeFilter !== 'all' ? ` · ${coverageTypeLabel(serviceTypeFilter)}` : '';
+    const brandSuffix = brandFilter !== 'all' ? ` · ${brandOptions.find((brand) => brand.slug === brandFilter)?.label || brandFilter}` : '';
+    const extraSuffix = `${typeSuffix}${brandSuffix}`;
     if (selectedTableIds.includes('all')) {
-      return `Toda a rede DriveB${modelSuffix} (${formatNumber(workshopsForModel.length)} oficinas)`;
+      return `Toda a rede DriveB${modelSuffix}${extraSuffix} (${formatNumber(workshopsForStudy.length)} oficinas)`;
     }
     const idsSet = new Set(selectedTableIds);
     const consumedIds = new Set();
@@ -458,7 +492,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
       .map((id) => tableOptions.find((table) => table.id === id)?.descricao)
       .filter(Boolean);
     const labels = [...groupLabels, ...individualLabels];
-    return `${labels.join(' + ')}${modelSuffix} (${formatNumber(workshopsForModel.length)} oficinas)`;
+    return `${labels.join(' + ')}${modelSuffix}${extraSuffix} (${formatNumber(workshopsForStudy.length)} oficinas)`;
   }
 
   async function persistStudy({ rows, settings, studyResult, fileNameToSave }) {
@@ -500,7 +534,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
     }
     setParseError('');
     const label = buildStudyTableLabel();
-    const studyResult = generateCapillarityStudy({ rows, workshops: workshopsForModel, brCities });
+    const studyResult = generateCapillarityStudy({ rows, workshops: workshopsForStudy, brCities });
     setStudy(studyResult);
     setStudyTableLabel(label);
     setStatusFilter('all');
@@ -511,7 +545,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
     if (clientId) {
       await persistStudy({
         rows,
-        settings: { selectedTableIds, modelFilter, label },
+        settings: { selectedTableIds, modelFilter, serviceTypeFilter, brandFilter, label },
         studyResult,
         fileNameToSave: fileName,
       });
@@ -562,12 +596,16 @@ export default function CapillarityStudyClient({ clientId } = {}) {
   // (nao do que foi salvo no estudo), entao "Recalcular" e reabrir um estudo antigo
   // sempre usam a rede vigente. Nao dependem de radiusKm, entao ficam num memo separado.
   // Linha de frota pesada so pode ser coberta por oficina que atende pesado.
-  const radiusCoverageIndexAll = useMemo(() => buildCoverageIndex(workshopsForModel), [workshopsForModel]);
+  const radiusCoverageIndexAll = useMemo(() => buildCoverageIndex(workshopsForStudy), [workshopsForStudy]);
   const radiusCoverageIndexHeavy = useMemo(
-    () => buildCoverageIndex(workshopsForModel.filter((item) => item.atendePesado)),
-    [workshopsForModel],
+    () => buildCoverageIndex(workshopsForStudy.filter((item) => item.atendePesado)),
+    [workshopsForStudy],
   );
   const radiusCityLookup = useMemo(() => buildCityLookup(brCities), [brCities]);
+  const radiusResolveConcessionariaIndex = useMemo(
+    () => createConcessionariaIndexResolver(workshopsForStudy),
+    [workshopsForStudy],
+  );
 
   // Com raio selecionado, a quantidade de oficinas de uma cidade passa a ser a SOMA de
   // todas as oficinas de todas as cidades cobertas dentro daquela distancia (incluindo a
@@ -585,7 +623,11 @@ export default function CapillarityStudyClient({ clientId } = {}) {
       const target = cityKey ? radiusCityLookup.get(cityKey) : null;
       if (!target) return row;
 
-      const coverageIndex = isHeavyFleetRow(row.fleetType) ? radiusCoverageIndexHeavy : radiusCoverageIndexAll;
+      const coverageIndex = selectCoverageIndexForRow(row, {
+        coverageIndexAll: radiusCoverageIndexAll,
+        coverageIndexHeavy: radiusCoverageIndexHeavy,
+        resolveConcessionariaIndex: radiusResolveConcessionariaIndex,
+      });
 
       let count = 0;
       const serviceCounts = {};
@@ -611,7 +653,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
         coveredByRadius: row.status !== 'covered' && count > 0,
       };
     });
-  }, [study, radiusKm, radiusCoverageIndexAll, radiusCoverageIndexHeavy, radiusCityLookup]);
+  }, [study, radiusKm, radiusCoverageIndexAll, radiusCoverageIndexHeavy, radiusCityLookup, radiusResolveConcessionariaIndex]);
 
   const adjustedSummary = useMemo(() => {
     const total = adjustedResults.length;
@@ -757,6 +799,33 @@ export default function CapillarityStudyClient({ clientId } = {}) {
               </div>
             </div>
 
+            <div className="filter-control filter-card mapping-tables">
+              <span>Tipo de oficina</span>
+              <p className="muted-small">Restringe o estudo a um tipo especifico de ponto de atendimento (ex: somente concessionarias).</p>
+              <div className="segmented-control" role="group" aria-label="Filtro de tipo de oficina">
+                {coverageTypeOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    className={serviceTypeFilter === option.value ? 'is-active' : ''}
+                    onClick={() => setServiceTypeFilter(option.value)}
+                    type="button"
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label className="filter-control filter-card mapping-field mapping-brand-field">
+              <span>Marca</span>
+              <select value={brandFilter} onChange={(event) => setBrandFilter(event.target.value)}>
+                <option value="all">Todas as marcas ({formatNumber(driveBWorkshops.length)} oficinas)</option>
+                {brandOptions.map((brand) => (
+                  <option key={brand.slug} value={brand.slug}>{brand.label} ({formatNumber(brand.count)} oficinas)</option>
+                ))}
+              </select>
+            </label>
+
             <div className="mapping-grid">
               {sheets.length > 1 ? (
                 <label className="filter-control filter-card mapping-field">
@@ -832,7 +901,21 @@ export default function CapillarityStudyClient({ clientId } = {}) {
                 onChange={(value) => updateMapping({ fleetType: value })}
                 headerRow={headerRow}
               />
+              <FieldSelect
+                label="Marca do veiculo"
+                value={mapping.vehicleBrand}
+                onChange={(value) => updateMapping({ vehicleBrand: value })}
+                headerRow={headerRow}
+              />
             </div>
+
+            {mapping.vehicleBrand !== undefined ? (
+              <p className="upload-notice">
+                Com a marca informada, a cobertura dessa linha passa a olhar so para concessionarias
+                daquela marca perto da cidade (em vez da rede inteira). Linhas sem marca continuam
+                usando a rede completa normalmente.
+              </p>
+            ) : null}
 
             {parseError ? <p className="upload-error">{parseError}</p> : null}
 
@@ -850,6 +933,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
                     <th>Cliente</th>
                     <th>Qtd. Veiculos</th>
                     <th>Frota</th>
+                    <th>Marca do veiculo</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -861,10 +945,11 @@ export default function CapillarityStudyClient({ clientId } = {}) {
                       <td>{row.client || '-'}</td>
                       <td>{row.vehicleCount || '-'}</td>
                       <td>{row.fleetType || '-'}</td>
+                      <td>{row.vehicleBrand || '-'}</td>
                     </tr>
                   ))}
                   {!previewRows.length ? (
-                    <tr><td colSpan={6} className="muted">Nenhuma linha reconhecida com esse mapeamento ainda.</td></tr>
+                    <tr><td colSpan={7} className="muted">Nenhuma linha reconhecida com esse mapeamento ainda.</td></tr>
                   ) : null}
                 </tbody>
               </table>
@@ -1021,6 +1106,7 @@ export default function CapillarityStudyClient({ clientId } = {}) {
                       <th>Consultor</th>
                       <th>Qtd. Veiculos</th>
                       <th>Frota</th>
+                      <th>Marca exigida</th>
                       <th>Cobertura</th>
                       <th>Qtd. Oficinas</th>
                       <th>Tipos de cobertura</th>
@@ -1042,6 +1128,15 @@ export default function CapillarityStudyClient({ clientId } = {}) {
                         <td>{row.consultant || '-'}</td>
                         <td>{row.vehicleCount || '-'}</td>
                         <td>{row.fleetType || '-'}</td>
+                        <td>
+                          {row.vehicleBrandLabel || (row.vehicleBrand ? row.vehicleBrand : '-')}
+                          {row.vehicleBrandUnrecognized ? (
+                            <>
+                              <br />
+                              <span className="muted-small">marca nao reconhecida, usou rede completa</span>
+                            </>
+                          ) : null}
+                        </td>
                         <td>
                           <StatusChip status={row.status} />
                           {row.coveredByRadius ? (
