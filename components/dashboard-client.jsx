@@ -586,6 +586,9 @@ export default function DashboardClient({
             <Link className="app-switch-link" href="/radar-precos">
               <span aria-hidden="true">◎</span> Radar de Precos
             </Link>
+            <Link className="app-switch-link" href="/prospeccao">
+              <span aria-hidden="true">⌖</span> Prospeccao
+            </Link>
             <a className="app-switch-link" href="https://demandpipe-crm.vercel.app/" target="_blank" rel="noopener noreferrer">
               <span aria-hidden="true">⇄</span> CRM DemandPipe
             </a>

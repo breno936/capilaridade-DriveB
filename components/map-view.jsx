@@ -22,11 +22,20 @@ function loadImage(src) {
 }
 
 async function loadMarkerIcons() {
+  // Um icone de marca faltando (ex: arquivo PNG nunca adicionado) nao pode derrubar o mapa
+  // inteiro - cai pro icone padrao se a imagem daquela marca falhar ao carregar.
   const brandEntries = await Promise.all(
-    workshopBrands.map(async (brand) => [brand.slug, await loadImage(brandIconUrl(brand.slug))]),
+    workshopBrands.map(async (brand) => {
+      try {
+        return [brand.slug, await loadImage(brandIconUrl(brand.slug))];
+      } catch {
+        return [brand.slug, null];
+      }
+    }),
   );
   const defaultIcon = await loadImage(DEFAULT_MARKER_ICON_SRC);
-  return { default: defaultIcon, brands: Object.fromEntries(brandEntries) };
+  const brands = Object.fromEntries(brandEntries.filter(([, icon]) => icon));
+  return { default: defaultIcon, brands };
 }
 
 // Tiles Esri (ArcGIS Online), sem necessidade de API key. "light" traz relevo/hillshade real.
@@ -169,7 +178,28 @@ function buildHeatPoints(workshops, zoom) {
   });
 }
 
-export default function MapView({ workshops, selectedId, onSelect, layerMode, mapTheme, fitRequestToken, isFullscreen }) {
+function defaultPopupHtml(item) {
+  const brand = item.brandSlug ? { slug: item.brandSlug, label: item.brandLabel } : null;
+  return [
+    '<div>',
+    `<strong>${item.displayName}</strong><br/>`,
+    `<span>${item.corporateName || ''}</span><br/>`,
+    brand ? `<span>Rede: ${brand.label}</span><br/>` : '',
+    `<span>Conceito: ${item.concept || 'N/D'}</span><br/>`,
+    `<span>Franchise: ${item.franchiseId || 'N/D'}</span><br/>`,
+    `<span>Estado: ${item.stateCode || 'N/D'}${item.stateName ? ` - ${item.stateName}` : ''}</span><br/>`,
+    item.cityDisplayName ? `<span>Cidade: ${item.cityDisplayName}</span><br/>` : '',
+    `<span>Cobertura: ${item.serviceTypeLabel || item.coverageLabel || 'Oficina'}</span><br/>`,
+    item.categoria
+      ? `<span>Categoria: ${item.categoria}</span><br/>`
+      : `<span>Rede: ${item.networkId || 'N/D'} - Categoria: ${item.categoryId || 'N/D'}</span><br/>`,
+    `<span>Contato: ${item.phone || item.ownerMobilePhone || 'N/D'}</span><br/>`,
+    `<a class="link-button" target="_blank" rel="noreferrer" href="${googleMapsUrl(item)}">Abrir no Google Maps</a>`,
+    '</div>',
+  ].join('');
+}
+
+export default function MapView({ workshops, selectedId, onSelect, layerMode, mapTheme, fitRequestToken, isFullscreen, renderPopup }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
@@ -385,23 +415,7 @@ export default function MapView({ workshops, selectedId, onSelect, layerMode, ma
           isBrand: Boolean(brandIcon),
           isSelected,
         },
-      ).bindPopup([
-        '<div>',
-        `<strong>${item.displayName}</strong><br/>`,
-        `<span>${item.corporateName || ''}</span><br/>`,
-        brand ? `<span>Rede: ${brand.label}</span><br/>` : '',
-        `<span>Conceito: ${item.concept || 'N/D'}</span><br/>`,
-        `<span>Franchise: ${item.franchiseId || 'N/D'}</span><br/>`,
-        `<span>Estado: ${item.stateCode || 'N/D'}${item.stateName ? ` - ${item.stateName}` : ''}</span><br/>`,
-        item.cityDisplayName ? `<span>Cidade: ${item.cityDisplayName}</span><br/>` : '',
-        `<span>Cobertura: ${item.serviceTypeLabel || item.coverageLabel || 'Oficina'}</span><br/>`,
-        item.categoria
-          ? `<span>Categoria: ${item.categoria}</span><br/>`
-          : `<span>Rede: ${item.networkId || 'N/D'} - Categoria: ${item.categoryId || 'N/D'}</span><br/>`,
-        `<span>Contato: ${item.phone || item.ownerMobilePhone || 'N/D'}</span><br/>`,
-        `<a class="link-button" target="_blank" rel="noreferrer" href="${googleMapsUrl(item)}">Abrir no Google Maps</a>`,
-        '</div>',
-      ].join(''));
+      ).bindPopup(renderPopup ? renderPopup(item) : defaultPopupHtml(item));
 
       marker.bindTooltip(item.displayName, {
         direction: 'top',
@@ -433,7 +447,7 @@ export default function MapView({ workshops, selectedId, onSelect, layerMode, ma
     } else if (map.hasLayer(markersLayer)) {
       map.removeLayer(markersLayer);
     }
-  }, [layerMode, onSelect, selectedId, workshops, zoom, mapReady]);
+  }, [layerMode, onSelect, selectedId, workshops, zoom, mapReady, renderPopup]);
 
   useEffect(() => {
     const map = mapRef.current;
